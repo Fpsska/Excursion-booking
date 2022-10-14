@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 import './assets/styles/base/_reset.scss';
 import './assets/styles/base/style.scss';
+import './assets/styles/abstracts/_media.scss';
 
 // /. imports
 

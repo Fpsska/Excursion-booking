@@ -13,9 +13,9 @@ const CardList: React.FC = () => {
         {
             id: 1,
             image: 'image-1.png',
+            caption: 'новинка',
             duration: '2 чаcа',
-            caption:
-                'АКЦИЯ - Обзорная экскурсия по рекам и каналам с остановками Hop on Hop Off 2019',
+            title: 'АКЦИЯ - Обзорная экскурсия по рекам и каналам с остановками Hop on Hop Off 2019',
             description: [
                 {
                     id: 1,
@@ -63,9 +63,9 @@ const CardList: React.FC = () => {
         {
             id: 2,
             image: 'image-2.png',
+            caption: 'круглый год',
             duration: '2 чаcа',
-            caption:
-                'Обзорная экскурсия по рекам и каналам с остановками Hop on Hop Off 2020',
+            title: 'Обзорная экскурсия по рекам и каналам с остановками Hop on Hop Off 2020',
             description: [
                 {
                     id: 1,

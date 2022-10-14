@@ -1,0 +1,71 @@
+@import './functions';
+
+// /.imports
+
+@media screen and (min-width: 768px) {
+
+    .card__wrapper {
+        flex-direction: row;
+    }
+
+    .card__preview {
+        flex-basis: useRem(325);
+        flex-shrink: 0;
+        max-height: 100%;
+        min-height: useRem(370);
+        border-radius: useRem(16) 0 0 useRem(16);
+    }
+
+    .card__content {
+        padding: useRem(22) useRem(34) useRem(32) useRem(12);
+    }
+
+    .card__title {
+        order: -2;
+        margin: 0 0 useRem(18) 0;
+        font-size: useRem(26);
+        line-height: useRem(34);
+    }
+
+    .card__duration {
+        margin-bottom: useRem(12);
+    }
+
+    .card__time {
+        font-size: useRem(14);
+    }
+
+    .card__preview {
+        &::before {
+            padding: useRem(12) useRem(34);
+            font-size: useRem(16);
+            top: useRem(46);
+        }
+    }
+
+    .card__link {
+        font-size: useRem(18);
+    }
+
+    .description__link {
+        font-size: useRem(18);
+    }
+
+    .price__value--general {
+        font-size: useRem(36);
+    }
+
+    .price__value--additional {
+        font-size: useRem(14);
+    }
+
+    .flight-time__option {
+        font-size: useRem(16);
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .card__preview {
+        flex-basis: useRem(475);
+    }
+}

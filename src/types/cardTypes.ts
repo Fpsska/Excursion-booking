@@ -1,6 +1,7 @@
 export interface Icard {
     id: number
     image: string
+    title: string
     caption: string
     duration: string
     flightTimes: Itime[]

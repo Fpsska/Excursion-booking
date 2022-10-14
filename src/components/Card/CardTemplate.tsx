@@ -1,32 +1,38 @@
 import React from 'react';
 
-import { Iprice } from '../../types/cardTypes';
-import { Itime } from '../../types/cardTypes';
-import { Idescription } from '../../types/cardTypes';
+import { Iprice, Itime, Idescription } from '../../types/cardTypes';
 
 // /. imports
 
 interface propTypes {
     image: string;
-    duration: string;
     caption: string;
-    flightTimes: any[];
-    description: any[];
-    prices: any[];
+    duration: string;
+    title: string;
+    flightTimes: Itime[];
+    description: Idescription[];
+    prices: Iprice[];
 }
 
 // /. interfaces
 
 const CardTemplate: React.FC<propTypes> = props => {
-    const { image, duration, caption, flightTimes, description, prices } =
-        props;
+    const {
+        image,
+        caption,
+        duration,
+        title,
+        flightTimes,
+        description,
+        prices
+    } = props;
 
     return (
         <article className="services__card card">
             <div className="card__wrapper">
                 <div
                     className="card__preview"
-                    data-title="Новинка"
+                    data-title={caption}
                 >
                     <img
                         className="card__image"
@@ -66,7 +72,7 @@ const CardTemplate: React.FC<propTypes> = props => {
                         </svg>
                         <span className="card__time">{duration}</span>
                     </div>
-                    <h2 className="card__caption">{caption}</h2>
+                    <h2 className="card__title">{title}</h2>
                     <ul className="card__description description">
                         {description.map((template: Idescription) => {
                             return (
@@ -120,7 +126,7 @@ const CardTemplate: React.FC<propTypes> = props => {
                                     <span className="price__value price__value--general">
                                         {price.general}
                                     </span>
-                                    <span className="price__valueprice__value--additional">
+                                    <span className="price__value price__value--additional">
                                         {price.additional}
                                     </span>
                                 </div>

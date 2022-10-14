@@ -6,7 +6,7 @@
 
     overflow: hidden;
     border: useRem(1) solid #828282;
-    border-radius: useRem(10);
+    border-radius: useRem(16);
 
     &__wrapper {
         display: flex;
@@ -16,9 +16,8 @@
     &__preview {
         position: relative;
         overflow: hidden;
-        border-radius: useRem(10) useRem(10) 0 0;
-        min-height: useRem(220);
-        max-height: useRem(220);
+        border-radius: useRem(16) useRem(16) 0 0;
+        flex-basis: useRem(220);
 
         &::before {
             content: attr(data-title);
@@ -43,6 +42,8 @@
     }
 
     &__content {
+        display: flex;
+        flex-direction: column;
         padding: useRem(16) useRem(12) useRem(18) useRem(12);
     }
 
@@ -51,7 +52,7 @@
         font-size: useRem(12);
     }
 
-    &__caption {
+    &__title {
         margin: useRem(14) 0 useRem(40) 0;
         font-size: useRem(14);
         line-height: useRem(22);
