@@ -5,7 +5,7 @@
 html,
 body {
     font-size: #{$font-size}px;
-    min-height: 100%;
+    height: 100%;
     scroll-behavior: smooth;
 }
 
@@ -18,4 +18,185 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
     overflow-x: hidden;
+}
+
+#root,
+.App,
+.page {
+    height: 100%;
+}
+
+
+.container {
+    max-width: useRem(1090);
+    margin: 0 auto;
+    padding: 0 useRem(20);
+}
+
+.services {
+    &__wrapper {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: useRem(30);
+        padding-top: useRem(26);
+    }
+}
+
+.card {
+
+    overflow: hidden;
+    border: useRem(1) solid #828282;
+    border-radius: useRem(10);
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__preview {
+        position: relative;
+        overflow: hidden;
+        border-radius: useRem(10) useRem(10) 0 0;
+        min-height: useRem(220);
+        max-height: useRem(220);
+
+        &::before {
+            content: attr(data-title);
+            z-index: 2;
+            position: absolute;
+            left: 0;
+            top: useRem(40);
+            background-color: #FED74B;
+            padding: useRem(8) useRem(16);
+            font-size: useRem(12);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+    }
+
+    &__image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__content {
+        padding: useRem(16) useRem(12) useRem(18) useRem(12);
+    }
+
+    &__time {
+        color: #9E9E9E;
+        font-size: useRem(12);
+    }
+
+    &__caption {
+        margin: useRem(14) 0 useRem(40) 0;
+        font-size: useRem(14);
+        line-height: useRem(22);
+        font-weight: 600;
+    }
+
+    &__duration {
+        display: flex;
+        align-items: center;
+
+        :not(:last-child) {
+            margin-right: useRem(10);
+        }
+    }
+
+    &__link {
+        font-size: useRem(14);
+        padding: useRem(12) useRem(28);
+        color: #404040;
+        background-color: $yellow-color;
+        border-radius: useRem(20);
+        transition: all .3s ease-in-out;
+
+        &:hover {
+            background-color: #FECF01;
+        }
+    }
+
+    &__description {
+        margin-bottom: useRem(40);
+    }
+
+    &__bottom {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__price {
+        margin-right: useRem(10);
+    }
+
+}
+
+.description {
+    &__item {
+        display: flex;
+        align-items: center;
+
+        &:not(:last-child) {
+            margin-bottom: useRem(12);
+        }
+    }
+
+    &__item-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-left: useRem(20);
+    }
+
+    &__item--time {
+        align-items: flex-start;
+
+        .description__link {
+            margin: 0 0 useRem(10) 0;
+        }
+    }
+
+    &__link {
+        margin-left: useRem(20);
+        line-height: useRem(18);
+    }
+
+    &__flight-button {
+        padding: useRem(4) useRem(12);
+        border-radius: useRem(10);
+        background-color: $light-blue-color;
+        transition: all .3s ease-in-out;
+
+        &:hover {
+            background-color: rgba($color: $blue-color, $alpha: .4);
+        }
+
+        &:not(:last-child) {
+            margin-right: useRem(4);
+        }
+    }
+}
+
+.price {
+
+    display: flex;
+    flex-direction: column;
+
+    &__value {
+        color: $dark-color;
+        font-weight: 400;
+    }
+
+    &__value--general {
+        font-weight: normal;
+        text-transform: uppercase;
+        font-size: useRem(30);
+    }
+
+    &__valueprice__value--additional {
+        font-size: useRem(10);
+    }
 }
