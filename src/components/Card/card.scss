@@ -1,0 +1,101 @@
+@import '../../assets/styles/abstracts/functions';
+
+// /. imports
+
+.card {
+
+    overflow: hidden;
+    border: useRem(1) solid #828282;
+    border-radius: useRem(10);
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__preview {
+        position: relative;
+        overflow: hidden;
+        border-radius: useRem(10) useRem(10) 0 0;
+        min-height: useRem(220);
+        max-height: useRem(220);
+
+        &::before {
+            content: attr(data-title);
+            z-index: 2;
+            position: absolute;
+            left: 0;
+            top: useRem(40);
+            background-color: #FED74B;
+            padding: useRem(8) useRem(16);
+            font-size: useRem(12);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+    }
+
+    &__image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__content {
+        padding: useRem(16) useRem(12) useRem(18) useRem(12);
+    }
+
+    &__time {
+        color: #9E9E9E;
+        font-size: useRem(12);
+    }
+
+    &__caption {
+        margin: useRem(14) 0 useRem(40) 0;
+        font-size: useRem(14);
+        line-height: useRem(22);
+        font-weight: 600;
+    }
+
+    &__duration {
+        display: flex;
+        align-items: center;
+
+        :not(:last-child) {
+            margin-right: useRem(10);
+        }
+    }
+
+    &__link {
+        font-size: useRem(14);
+        padding: useRem(12) useRem(28);
+        color: #404040;
+        background-color: $yellow-color;
+        border-radius: useRem(20);
+        transition: all .3s ease-in-out;
+
+        &:hover {
+            background-color: #FECF01;
+        }
+    }
+
+    &__description {
+        margin-bottom: useRem(16);
+    }
+
+    &__flight-time {
+        margin: 0 0 useRem(34) useRem(36);
+    }
+
+    &__bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__price {
+        margin-right: useRem(10);
+    }
+
+}
