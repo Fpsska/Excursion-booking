@@ -1,0 +1,25 @@
+@import '../../assets/styles/abstracts/functions';
+
+// /. imports
+
+.flight-time {
+    &__option {
+        padding: useRem(4) useRem(12);
+        border-radius: useRem(10);
+        background-color: $light-blue-color;
+        transition: all .3s ease-in-out;
+        font-size: useRem(14);
+
+        &:hover {
+            background-color: rgba($color: $blue-color, $alpha: .4);
+        }
+
+        &:not(:last-child) {
+            margin-right: useRem(6);
+        }
+    }
+
+    &__option.selected {
+        background-color: #6BA6FF;
+    }
+}

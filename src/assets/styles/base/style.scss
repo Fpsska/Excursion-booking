@@ -45,61 +45,6 @@ body {
     }
 }
 
-
-.description {
-    &__item {
-        display: flex;
-        align-items: center;
-
-        &:not(:last-child) {
-            margin-bottom: useRem(12);
-        }
-    }
-
-    &__item-wrapper {
-        display: flex;
-        flex-direction: column;
-        margin-left: useRem(20);
-    }
-
-    &__item--time {
-        align-items: flex-start;
-
-        .description__link {
-            margin: 0 0 useRem(10) 0;
-        }
-    }
-
-    &__link {
-        margin-left: useRem(20);
-        font-size: useRem(14);
-        line-height: useRem(18);
-    }
-
-}
-
-.flight-time {
-    &__option {
-        padding: useRem(4) useRem(12);
-        border-radius: useRem(10);
-        background-color: $light-blue-color;
-        transition: all .3s ease-in-out;
-        font-size: useRem(14);
-
-        &:hover {
-            background-color: rgba($color: $blue-color, $alpha: .4);
-        }
-
-        &:not(:last-child) {
-            margin-right: useRem(6);
-        }
-    }
-
-    &__option.selected {
-        background-color: #6BA6FF;
-    }
-}
-
 .price {
 
     display: flex;

@@ -1,0 +1,35 @@
+@import '../../assets/styles/abstracts/functions';
+
+// /. imports
+
+.description {
+    &__item {
+        display: flex;
+        align-items: center;
+
+        &:not(:last-child) {
+            margin-bottom: useRem(12);
+        }
+    }
+
+    &__item-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-left: useRem(20);
+    }
+
+    &__item--time {
+        align-items: flex-start;
+
+        .description__link {
+            margin: 0 0 useRem(10) 0;
+        }
+    }
+
+    &__link {
+        margin-left: useRem(20);
+        font-size: useRem(14);
+        line-height: useRem(18);
+    }
+
+}
