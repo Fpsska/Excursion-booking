@@ -45,6 +45,7 @@
 
     .card__link {
         font-size: useRem(18);
+        padding: useRem(16) useRem(42);
     }
 
     .description__link {
@@ -61,6 +62,21 @@
 
     .flight-time__option {
         font-size: useRem(16);
+    }
+}
+
+@media screen and (min-width: 1024px) {
+
+    .services__list {
+        gap: useRem(60);
+    }
+
+    .card__bottom {
+        justify-content: flex-start;
+    }
+
+    .card__preview {
+        flex-basis: useRem(425);
     }
 }
 

@@ -94,6 +94,10 @@ body {
             margin-right: useRem(6);
         }
     }
+
+    &__option.selected {
+        background-color: #6BA6FF;
+    }
 }
 
 .price {

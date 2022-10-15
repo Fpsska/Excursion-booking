@@ -5,6 +5,7 @@ import { Iprice, Itime, Idescription } from '../../types/cardTypes';
 // /. imports
 
 interface propTypes {
+    id: number;
     image: string;
     caption: string;
     duration: string;
@@ -12,19 +13,23 @@ interface propTypes {
     flightTimes: Itime[];
     description: Idescription[];
     prices: Iprice[];
+
+    onTimeButtonClick: (arg1: number, arg2: number) => void;
 }
 
 // /. interfaces
 
 const CardTemplate: React.FC<propTypes> = props => {
     const {
+        id,
         image,
         caption,
         duration,
         title,
         flightTimes,
         description,
-        prices
+        prices,
+        onTimeButtonClick
     } = props;
 
     return (
@@ -108,7 +113,14 @@ const CardTemplate: React.FC<propTypes> = props => {
                             return (
                                 <button
                                     key={option.id}
-                                    className="flight-time__option"
+                                    className={
+                                        option.isSelected
+                                            ? 'flight-time__option selected'
+                                            : 'flight-time__option'
+                                    }
+                                    onClick={() =>
+                                        onTimeButtonClick(id, option.id)
+                                    }
                                 >
                                     {option.time}
                                 </button>
@@ -135,6 +147,7 @@ const CardTemplate: React.FC<propTypes> = props => {
                         <a
                             className="card__link"
                             href="#"
+                            onClick={e => e.preventDefault()}
                         >
                             Подробнее
                         </a>
