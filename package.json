@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "author": "Fpsska",
+  "homepage": "https://Fpsska.github.io/NevaTrip-Task",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.6",
     "@testing-library/jest-dom": "^5.16.5",
@@ -26,7 +27,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint -c .eslintrc --ext .js,.jsx,.ts,.tsx .",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +55,7 @@
     "eslint": "^8.25.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-react": "^7.31.10",
+    "gh-pages": "^4.0.0",
     "prettier": "^2.7.1"
   }
 }
