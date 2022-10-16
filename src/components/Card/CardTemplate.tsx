@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import { useAppDispatch } from '../../app/hooks';
 
@@ -10,6 +10,7 @@ import DescriptionList from '../DescriptionList/DescriptionList';
 import TimeList from '../Time/TimeList';
 
 import { useWidthHandler } from '../../hooks/useWidthHandler';
+import { getRandomArrElement } from '../../helpers/getRandomArrElement';
 
 // /. imports
 
@@ -38,6 +39,8 @@ const CardTemplate: React.FC<propTypes> = props => {
         prices
     } = props;
 
+    const [currentColors, setCurrentColors] = useState<string>('#444');
+
     const dispatch = useAppDispatch();
 
     const { isAllowableRes } = useWidthHandler({ min: 300, max: 768 });
@@ -46,17 +49,26 @@ const CardTemplate: React.FC<propTypes> = props => {
         dispatch(switchTimeOptSelectedStatus({ service_id, option_id }));
     };
 
+    useEffect(() => {
+        setCurrentColors(
+            getRandomArrElement(['#099CE8', '#FFD83C', '#7553FF'])
+        );
+    }, []);
+
     return (
         <article className="services__card card">
             <div className="card__wrapper">
                 <div
                     className="card__preview"
+                    style={{
+                        backgroundColor: currentColors
+                    }}
                     data-title={caption}
                 >
                     <img
                         className="card__image"
                         src={require(`../../assets/images/${image}`)}
-                        alt="some image"
+                        alt="some content image with attraction"
                     />
                 </div>
 
