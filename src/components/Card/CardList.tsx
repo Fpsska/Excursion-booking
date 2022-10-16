@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { servicesData as mockData } from '../../data/servicesData';
+import { useAppSelector } from '../../app/hooks';
 
-import { Icard, Itime } from '../../types/cardTypes';
+import { Icard } from '../../types/cardTypes';
 
 import CardTemplate from './CardTemplate';
 
@@ -11,35 +11,21 @@ import './card.scss';
 // /. imports
 
 const CardList: React.FC = () => {
-    const [servicesData, setServicesData] = useState<Icard[]>(mockData);
+    const { servicesData } = useAppSelector(state => state.mainSlice);
+
+    const [cardData, setCardData] = useState<Icard[]>(servicesData);
 
     useEffect(() => {
-        setServicesData(mockData);
-    }, [mockData]);
-
-    const onTimeButtonClick = (service_id: number, option_id: number): void => {
-        const arrayCopy = [...servicesData];
-
-        const targetServiceIDX = servicesData.findIndex(
-            (service: Icard) => service.id === service_id
-        );
-
-        arrayCopy[targetServiceIDX]?.flightTimes.map((opt: Itime) =>
-            opt.id === option_id
-                ? (opt.isSelected = true)
-                : (opt.isSelected = false)
-        );
-        setServicesData(arrayCopy);
-    };
+        setCardData(servicesData);
+    }, [servicesData]);
 
     return (
         <div className="services__list">
-            {servicesData.map((card: Icard) => {
+            {cardData.map((card: Icard) => {
                 return (
                     <CardTemplate
                         key={card.id}
                         {...card}
-                        onTimeButtonClick={onTimeButtonClick}
                     />
                 );
             })}

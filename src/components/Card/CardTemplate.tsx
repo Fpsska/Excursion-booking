@@ -1,5 +1,9 @@
 import React from 'react';
 
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+
+import { switchTimeOptSelectedStatus } from '../../app/slices/mainSlice';
+
 import { Iprice, Itime, Idescription } from '../../types/cardTypes';
 
 import List from '../List/List';
@@ -18,8 +22,6 @@ interface propTypes {
     flightTimes: Itime[];
     description: Idescription[];
     prices: Iprice[];
-
-    onTimeButtonClick: (arg1: number, arg2: number) => void;
 }
 
 // /. interfaces
@@ -33,11 +35,16 @@ const CardTemplate: React.FC<propTypes> = props => {
         title,
         flightTimes,
         description,
-        prices,
-        onTimeButtonClick
+        prices
     } = props;
 
+    const dispatch = useAppDispatch();
+
     const { isAllowableRes } = useWidthHandler({ min: 300, max: 768 });
+
+    const onTimeButtonClick = (service_id: number, option_id: number): void => {
+        dispatch(switchTimeOptSelectedStatus({ service_id, option_id }));
+    };
 
     return (
         <article className="services__card card">

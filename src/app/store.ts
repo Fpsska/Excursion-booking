@@ -1,9 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 
+import mainSlice from './slices/mainSlice';
+
 // /. imports
 
 export const store = configureStore({
     reducer: {
+        mainSlice: mainSlice
     }
 });
 
