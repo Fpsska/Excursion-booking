@@ -44,6 +44,7 @@
     &__content {
         display: flex;
         flex-direction: column;
+        height: 100%;
         padding: useRem(16) useRem(12) useRem(18) useRem(12);
     }
 

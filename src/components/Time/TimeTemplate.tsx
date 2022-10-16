@@ -8,8 +8,8 @@ interface propsTypes {
     isVisible: boolean;
     time: string;
 
-    onTimeButtonClick: (arg1: number, arg2: number) => void;
     service_id: number;
+    onTimeButtonClick: (arg1: number, arg2: number) => void;
 }
 
 // /. interfaces

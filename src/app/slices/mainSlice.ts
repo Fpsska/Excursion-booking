@@ -5,7 +5,7 @@ import { Icard, Itime } from './../../types/cardTypes';
 // /. imports
 
 interface mainSliceState {
-    servicesData: Icard[]
+    servicesData: Icard[];
 }
 
 // /. interfaces
@@ -39,43 +39,43 @@ const initialState: mainSliceState = {
             flightTimes: [
                 {
                     id: 1,
-                    time: '12:00',
+                    time: '11:00',
                     isSelected: false,
                     isVisible: true
                 },
                 {
                     id: 2,
-                    time: '12:00',
+                    time: '11:00',
                     isSelected: true,
                     isVisible: true
                 },
                 {
                     id: 3,
-                    time: '12:00',
+                    time: '11:00',
                     isSelected: false,
                     isVisible: true
                 },
                 {
                     id: 4,
-                    time: '12:00',
+                    time: '11:00',
                     isSelected: false,
                     isVisible: true
                 },
                 {
                     id: 5,
-                    time: '12:00',
+                    time: '11:00',
                     isSelected: false,
                     isVisible: true
                 },
                 {
                     id: 6,
-                    time: '12:00',
+                    time: '11:00',
                     isSelected: false,
                     isVisible: true
                 },
                 {
                     id: 7,
-                    time: '12:00',
+                    time: '11:00',
                     isSelected: false,
                     isVisible: true
                 }

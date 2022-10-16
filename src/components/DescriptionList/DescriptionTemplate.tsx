@@ -8,7 +8,7 @@ interface propTypes {
 
 // /. interfaces
 
-const ListTemplate: React.FC<propTypes> = ({ text }) => {
+const DescriptionTemplate: React.FC<propTypes> = ({ text }) => {
     return (
         <li className="description__item">
             <svg
@@ -33,4 +33,4 @@ const ListTemplate: React.FC<propTypes> = ({ text }) => {
     );
 };
 
-export default ListTemplate;
+export default DescriptionTemplate;

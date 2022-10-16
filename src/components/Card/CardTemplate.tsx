@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 
 import { switchTimeOptSelectedStatus } from '../../app/slices/mainSlice';
 
 import { Iprice, Itime, Idescription } from '../../types/cardTypes';
 
-import List from '../List/List';
+import DescriptionList from '../DescriptionList/DescriptionList';
 import TimeList from '../Time/TimeList';
 
 import { useWidthHandler } from '../../hooks/useWidthHandler';
@@ -93,18 +93,22 @@ const CardTemplate: React.FC<propTypes> = props => {
                     </div>
                     <h2 className="card__title">{title}</h2>
 
-                    <List
+                    <DescriptionList
                         role={'card__description'}
-                        data={description}
+                        descrData={description}
+                        timesData={flightTimes}
+                        isAllowableRes={isAllowableRes}
+                        onTimeButtonClick={onTimeButtonClick}
+                        service_id={id}
                     />
 
                     <>
                         {isAllowableRes && (
                             <TimeList
                                 role={'card__flight-time'}
-                                data={flightTimes}
-                                onTimeButtonClick={onTimeButtonClick}
+                                timesData={flightTimes}
                                 service_id={id}
+                                onTimeButtonClick={onTimeButtonClick}
                             />
                         )}
                     </>
