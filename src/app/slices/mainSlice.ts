@@ -45,37 +45,37 @@ const initialState: mainSliceState = {
                 },
                 {
                     id: 2,
-                    time: '11:00',
+                    time: '12:00',
                     isSelected: true,
                     isVisible: true
                 },
                 {
                     id: 3,
-                    time: '11:00',
+                    time: '13:00',
                     isSelected: false,
                     isVisible: true
                 },
                 {
                     id: 4,
-                    time: '11:00',
+                    time: '14:00',
                     isSelected: false,
                     isVisible: true
                 },
                 {
                     id: 5,
-                    time: '11:00',
+                    time: '15:00',
                     isSelected: false,
                     isVisible: true
                 },
                 {
                     id: 6,
-                    time: '11:00',
+                    time: '16:00',
                     isSelected: false,
                     isVisible: true
                 },
                 {
                     id: 7,
-                    time: '11:00',
+                    time: '17:00',
                     isSelected: false,
                     isVisible: true
                 }
@@ -121,14 +121,21 @@ const initialState: mainSliceState = {
                 },
                 {
                     id: 2,
-                    time: '12:00',
+                    time: '13:00',
                     isSelected: false,
+                    isVisible: true
+                }
+                ,
+                {
+                    id: 3,
+                    time: '14:00',
+                    isSelected: true,
                     isVisible: true
                 },
                 {
-                    id: 3,
-                    time: '12:00',
-                    isSelected: true,
+                    id: 4,
+                    time: '15:00',
+                    isSelected: false,
                     isVisible: true
                 }
             ],
@@ -158,10 +165,32 @@ const mainSlice = createSlice({
 
             state.servicesData[targetServiceIDX]?.flightTimes
                 .map((opt: Itime) => opt.id === option_id ? opt.isSelected = true : opt.isSelected = false);
+        },
+        switchTimeOptVisibleStatus(state, action: PayloadAction<{ service_id: number }>) {
+            const { service_id } = action.payload;
+
+            const targetService = state.servicesData.find(
+                (service: Icard) => service.id === service_id
+            );
+
+            if (targetService) {
+                targetService.flightTimes.map((opt: Itime, idx) => idx >= 3 ? opt.isVisible = false : opt.isVisible = true);
+            }
+        },
+        setVisibleForAllTimeOpt(state, action: PayloadAction<{ service_id: number }>) {
+            const { service_id } = action.payload;
+
+            const targetService = state.servicesData.find(
+                (service: Icard) => service.id === service_id
+            );
+
+            if (targetService) {
+                targetService.flightTimes.map((opt: Itime) => opt.isVisible = true);
+            }
         }
     }
 });
 
-export const { switchTimeOptSelectedStatus } = mainSlice.actions;
+export const { switchTimeOptSelectedStatus, switchTimeOptVisibleStatus, setVisibleForAllTimeOpt } = mainSlice.actions;
 
 export default mainSlice.reducer;

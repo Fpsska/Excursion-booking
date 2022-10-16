@@ -1,4 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { useAppDispatch } from '../../app/hooks';
+
+import {
+    switchTimeOptVisibleStatus,
+    setVisibleForAllTimeOpt
+} from '../../app/slices/mainSlice';
 
 import { Itime } from '../../types/cardTypes';
 
@@ -12,13 +19,38 @@ interface propsTypes {
     timesData: Itime[];
     role?: string;
     service_id: number;
-    onTimeButtonClick: (arg1: number, arg2: number) => void;
+    onTimeOptionClick: (arg1: number, arg2: number) => void;
 }
 
 // /. interfaces
 
 const TimeList: React.FC<propsTypes> = props => {
-    const { timesData, role, service_id, onTimeButtonClick } = props;
+    const { timesData, role, service_id, onTimeOptionClick } = props;
+
+    const [isButtonVisible, setButtonVisibleStatus] = useState<boolean>(false);
+    const [isButtonClicked, setButtonClickedStatus] = useState<boolean>(false);
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(switchTimeOptVisibleStatus({ service_id }));
+    }, [service_id]);
+
+    useEffect(() => {
+        timesData.length >= 3
+            ? setButtonVisibleStatus(true)
+            : setButtonVisibleStatus(false);
+    }, [timesData]);
+
+    const onTimesButtonClickShow = (): void => {
+        setButtonClickedStatus(true);
+        dispatch(setVisibleForAllTimeOpt({ service_id }));
+    };
+
+    const onTimesButtonClickHide = (): void => {
+        setButtonClickedStatus(false);
+        dispatch(switchTimeOptVisibleStatus({ service_id }));
+    };
 
     return (
         <div className={role ? `${role} flight-time` : 'flight-time'}>
@@ -28,11 +60,32 @@ const TimeList: React.FC<propsTypes> = props => {
                         <TimeTemplate
                             key={time.id}
                             {...time}
-                            onTimeButtonClick={onTimeButtonClick}
+                            onTimeOptionClick={onTimeOptionClick}
                             service_id={service_id}
                         />
                     );
                 })}
+                <>
+                    {isButtonVisible && (
+                        <>
+                            {!isButtonClicked ? (
+                                <button
+                                    className="flight-time__button"
+                                    onClick={onTimesButtonClickShow}
+                                >
+                                    ещё...
+                                </button>
+                            ) : (
+                                <button
+                                    className="flight-time__button flight-time__button--hide"
+                                    onClick={onTimesButtonClickHide}
+                                >
+                                    скрыть...
+                                </button>
+                            )}
+                        </>
+                    )}
+                </>
             </div>
         </div>
     );

@@ -5,7 +5,7 @@ import { Idescription, Itime } from '../../types/cardTypes';
 import DescriptionTemplate from './DescriptionTemplate';
 import DescriptionExtendedTemplate from './DescriptionExtendedTemplate';
 
-import './list.scss';
+import './description.scss';
 
 // /. imports
 
@@ -15,7 +15,7 @@ interface propTypes {
     role?: string;
     isAllowableRes: boolean;
     service_id: number;
-    onTimeButtonClick: (arg1: number, arg2: number) => void;
+    onTimeOptionClick: (arg1: number, arg2: number) => void;
 }
 
 // /. interfaces
@@ -26,7 +26,7 @@ const DescriptionList: React.FC<propTypes> = ({
     role,
     isAllowableRes,
     service_id,
-    onTimeButtonClick
+    onTimeOptionClick
 }) => {
     const [descriptionData, setDescriptionData] =
         useState<Idescription[]>(descrData);
@@ -57,7 +57,7 @@ const DescriptionList: React.FC<propTypes> = ({
                             {...template}
                             service_id={service_id}
                             timesData={timesData}
-                            onTimeButtonClick={onTimeButtonClick}
+                            onTimeOptionClick={onTimeOptionClick}
                         ></DescriptionExtendedTemplate>
                     );
                 })}

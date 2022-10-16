@@ -42,7 +42,7 @@ const CardTemplate: React.FC<propTypes> = props => {
 
     const { isAllowableRes } = useWidthHandler({ min: 300, max: 768 });
 
-    const onTimeButtonClick = (service_id: number, option_id: number): void => {
+    const onTimeOptionClick = (service_id: number, option_id: number): void => {
         dispatch(switchTimeOptSelectedStatus({ service_id, option_id }));
     };
 
@@ -98,7 +98,7 @@ const CardTemplate: React.FC<propTypes> = props => {
                         descrData={description}
                         timesData={flightTimes}
                         isAllowableRes={isAllowableRes}
-                        onTimeButtonClick={onTimeButtonClick}
+                        onTimeOptionClick={onTimeOptionClick}
                         service_id={id}
                     />
 
@@ -108,7 +108,7 @@ const CardTemplate: React.FC<propTypes> = props => {
                                 role={'card__flight-time'}
                                 timesData={flightTimes}
                                 service_id={id}
-                                onTimeButtonClick={onTimeButtonClick}
+                                onTimeOptionClick={onTimeOptionClick}
                             />
                         )}
                     </>

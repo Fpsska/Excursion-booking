@@ -9,13 +9,13 @@ interface propsTypes {
     time: string;
 
     service_id: number;
-    onTimeButtonClick: (arg1: number, arg2: number) => void;
+    onTimeOptionClick: (arg1: number, arg2: number) => void;
 }
 
 // /. interfaces
 
 const TimeTemplate: React.FC<propsTypes> = props => {
-    const { id, isSelected, isVisible, time, onTimeButtonClick, service_id } =
+    const { id, isSelected, isVisible, time, onTimeOptionClick, service_id } =
         props;
 
     return (
@@ -23,7 +23,7 @@ const TimeTemplate: React.FC<propsTypes> = props => {
             className={`flight-time__option ${isSelected ? 'selected' : ''} ${
                 !isVisible ? 'hidden' : ''
             }`}
-            onClick={() => onTimeButtonClick(service_id, id)}
+            onClick={() => onTimeOptionClick(service_id, id)}
         >
             {time}
         </button>

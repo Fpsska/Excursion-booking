@@ -29,4 +29,17 @@
         display: none
     }
 
+    &__button {
+        @extend .flight-time__option;
+
+        &:hover {
+            background-color: rgba($color: rgb(5, 184, 5), $alpha: .4);
+        }
+    }
+
+    &__button--hide {
+        &:hover {
+            background-color: rgba(#444, $alpha: .4);
+        }
+    }
 }

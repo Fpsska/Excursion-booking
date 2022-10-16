@@ -15,12 +15,12 @@
     &__item-wrapper {
         width: 100%;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
-        margin-left: useRem(20);
+        margin-left: useRem(14);
 
         .description__link {
-            margin: 0 useRem(10) 0 0;
+            margin: 0 useRem(5) 0 0;
         }
     }
 
@@ -29,7 +29,7 @@
     }
 
     &__link {
-        margin-left: useRem(20);
+        margin-left: useRem(14);
         font-size: useRem(14);
         line-height: useRem(18);
     }

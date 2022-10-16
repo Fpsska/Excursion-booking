@@ -10,7 +10,7 @@ interface propTypes {
     text: string;
     service_id: number;
     timesData: Itime[];
-    onTimeButtonClick: (arg1: number, arg2: number) => void;
+    onTimeOptionClick: (arg1: number, arg2: number) => void;
 }
 
 // /. interfaces
@@ -19,10 +19,10 @@ const DescriptionExtendedTemplate: React.FC<propTypes> = ({
     text,
     service_id,
     timesData,
-    onTimeButtonClick
+    onTimeOptionClick
 }) => {
     return (
-        <li className="description__item">
+        <li className="description__item description__item--time">
             <svg
                 width="16"
                 height="16"
@@ -45,7 +45,7 @@ const DescriptionExtendedTemplate: React.FC<propTypes> = ({
                 <TimeList
                     timesData={timesData}
                     service_id={service_id}
-                    onTimeButtonClick={onTimeButtonClick}
+                    onTimeOptionClick={onTimeOptionClick}
                 />
             </div>
         </li>
