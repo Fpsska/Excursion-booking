@@ -5,6 +5,8 @@ import { Iprice, Itime, Idescription } from '../../types/cardTypes';
 import List from '../List/List';
 import TimeList from '../Time/TimeList';
 
+import { useWidthHandler } from '../../hooks/useWidthHandler';
+
 // /. imports
 
 interface propTypes {
@@ -34,6 +36,8 @@ const CardTemplate: React.FC<propTypes> = props => {
         prices,
         onTimeButtonClick
     } = props;
+
+    const { isAllowableRes } = useWidthHandler({ min: 300, max: 768 });
 
     return (
         <article className="services__card card">
@@ -87,12 +91,16 @@ const CardTemplate: React.FC<propTypes> = props => {
                         data={description}
                     />
 
-                    <TimeList
-                        role={'card__flight-time'}
-                        data={flightTimes}
-                        onTimeButtonClick={onTimeButtonClick}
-                        service_id={id}
-                    />
+                    <>
+                        {isAllowableRes && (
+                            <TimeList
+                                role={'card__flight-time'}
+                                data={flightTimes}
+                                onTimeButtonClick={onTimeButtonClick}
+                                service_id={id}
+                            />
+                        )}
+                    </>
 
                     <div className="card__bottom">
                         {prices.map((price: Iprice) => {

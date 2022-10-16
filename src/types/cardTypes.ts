@@ -12,7 +12,8 @@ export interface Icard {
 export interface Itime {
     id: number
     time: string
-    isSelected: boolean
+    isSelected: boolean,
+    isVisible: boolean
 }
 
 export interface Idescription {

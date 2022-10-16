@@ -27,22 +27,44 @@ export const servicesData = [
                         {
                                 id: 1,
                                 time: '12:00',
-                                isSelected: false
+                                isSelected: false,
+                                isVisible: true
                         },
                         {
                                 id: 2,
                                 time: '12:00',
-                                isSelected: true
+                                isSelected: true,
+                                isVisible: true
                         },
                         {
                                 id: 3,
                                 time: '12:00',
-                                isSelected: false
+                                isSelected: false,
+                                isVisible: true
                         },
                         {
                                 id: 4,
                                 time: '12:00',
-                                isSelected: false
+                                isSelected: false,
+                                isVisible: true
+                        },
+                        {
+                                id: 5,
+                                time: '12:00',
+                                isSelected: false,
+                                isVisible: true
+                        },
+                        {
+                                id: 6,
+                                time: '12:00',
+                                isSelected: false,
+                                isVisible: true
+                        },
+                        {
+                                id: 7,
+                                time: '12:00',
+                                isSelected: false,
+                                isVisible: true
                         }
                 ],
                 prices: [
@@ -81,25 +103,28 @@ export const servicesData = [
                         {
                                 id: 1,
                                 time: '12:00',
-                                isSelected: false
+                                isSelected: false,
+                                isVisible: true
                         },
                         {
                                 id: 2,
                                 time: '12:00',
-                                isSelected: false
+                                isSelected: false,
+                                isVisible: true
                         },
                         {
                                 id: 3,
                                 time: '12:00',
-                                isSelected: true
+                                isSelected: true,
+                                isVisible: true
                         }
                 ],
                 prices: [
                         {
                                 id: 1,
                                 general: '2900 ₽',
-                                additional: '1200 р на причале'
+                                additional: ''
                         }
                 ]
         }
-]
+];

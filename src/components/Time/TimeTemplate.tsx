@@ -5,6 +5,7 @@ import React from 'react';
 interface propsTypes {
     id: number;
     isSelected: boolean;
+    isVisible: boolean;
     time: string;
 
     onTimeButtonClick: (arg1: number, arg2: number) => void;
@@ -14,15 +15,14 @@ interface propsTypes {
 // /. interfaces
 
 const TimeTemplate: React.FC<propsTypes> = props => {
-    const { id, isSelected, time, onTimeButtonClick, service_id } = props;
+    const { id, isSelected, isVisible, time, onTimeButtonClick, service_id } =
+        props;
 
     return (
         <button
-            className={
-                isSelected
-                    ? 'flight-time__option selected'
-                    : 'flight-time__option'
-            }
+            className={`flight-time__option ${isSelected ? 'selected' : ''} ${
+                !isVisible ? 'hidden' : ''
+            }`}
             onClick={() => onTimeButtonClick(service_id, id)}
         >
             {time}

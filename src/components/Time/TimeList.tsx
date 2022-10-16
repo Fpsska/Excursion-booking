@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { Itime } from '../../types/cardTypes';
+import { Icard, Itime } from '../../types/cardTypes';
 
 import TimeTemplate from './TimeTemplate';
 
@@ -11,14 +11,15 @@ import './time.scss';
 interface propsTypes {
     data: Itime[];
     role: string;
-    onTimeButtonClick: (arg1: number, arg2: number) => void;
     service_id: number;
+    onTimeButtonClick: (arg1: number, arg2: number) => void;
 }
 
 // /. interfaces
 
 const TimeList: React.FC<propsTypes> = props => {
-    const { data, role, onTimeButtonClick, service_id } = props;
+    const { data, role, service_id, onTimeButtonClick } = props;
+
     return (
         <div className={role ? `${role} flight-time` : 'flight-time'}>
             {data.map((time: Itime) => {

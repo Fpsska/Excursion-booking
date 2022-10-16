@@ -22,4 +22,9 @@
     &__option.selected {
         background-color: #6BA6FF;
     }
+
+    &__option.hidden {
+        display: none
+    }
+
 }
