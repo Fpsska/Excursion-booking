@@ -2,10 +2,20 @@
 
 // /.imports
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 375px) {
+    .card .flight-time__wrapper {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media screen and (min-width: 525px) {
+
+    // .card .flight-time__wrapper {
+    //     grid-template-columns: repeat(7, auto);
+    // }
 
     .card__wrapper {
-        flex-direction: row;
+        justify-content: space-between;
     }
 
     .card__preview {
@@ -21,14 +31,8 @@
     }
 
     .card__title {
-        order: -2;
-        margin: 0 0 useRem(18) 0;
         font-size: useRem(26);
         line-height: useRem(34);
-    }
-
-    .card__duration {
-        margin-bottom: useRem(12);
     }
 
     .card__time {
@@ -69,6 +73,23 @@
 
     .services__list {
         gap: useRem(60);
+    }
+
+    // .card .flight-time__wrapper {
+    //     grid-template-columns: repeat(4, 1fr);
+    // }
+
+    .card__wrapper {
+        flex-direction: row;
+    }
+
+    .card__title {
+        order: -2;
+        margin: 0 0 useRem(18) 0;
+    }
+
+    .card__duration {
+        margin-bottom: useRem(12);
     }
 
     .card__bottom {

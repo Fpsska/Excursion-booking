@@ -88,6 +88,10 @@
 
     &__flight-time {
         margin: 0 0 useRem(34) useRem(36);
+
+        .flight-time__wrapper {
+            grid-template-columns: repeat(3, 1fr);
+        }
     }
 
     &__bottom {

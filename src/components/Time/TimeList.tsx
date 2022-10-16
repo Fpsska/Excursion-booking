@@ -22,16 +22,18 @@ const TimeList: React.FC<propsTypes> = props => {
 
     return (
         <div className={role ? `${role} flight-time` : 'flight-time'}>
-            {timesData.map((time: Itime) => {
-                return (
-                    <TimeTemplate
-                        key={time.id}
-                        {...time}
-                        onTimeButtonClick={onTimeButtonClick}
-                        service_id={service_id}
-                    />
-                );
-            })}
+            <div className="flight-time__wrapper">
+                {timesData.map((time: Itime) => {
+                    return (
+                        <TimeTemplate
+                            key={time.id}
+                            {...time}
+                            onTimeButtonClick={onTimeButtonClick}
+                            service_id={service_id}
+                        />
+                    );
+                })}
+            </div>
         </div>
     );
 };

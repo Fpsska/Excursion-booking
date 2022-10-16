@@ -3,7 +3,13 @@
 // /. imports
 
 .flight-time {
+    &__wrapper {
+        display: grid;
+        grid-gap: useRem(8);
+    }
+
     &__option {
+        text-align: center;
         padding: useRem(4) useRem(12);
         border-radius: useRem(10);
         background-color: $light-blue-color;
@@ -12,10 +18,6 @@
 
         &:hover {
             background-color: rgba($color: $blue-color, $alpha: .4);
-        }
-
-        &:not(:last-child) {
-            margin-right: useRem(6);
         }
     }
 
