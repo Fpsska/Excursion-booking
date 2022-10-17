@@ -62,3 +62,44 @@ body {
         font-size: useRem(10);
     }
 }
+
+.timetable {
+
+    &__wrapper {
+        padding: useRem(10);
+    }
+
+    &__form {
+        margin-bottom: useRem(15);
+    }
+}
+
+.timetable-form {
+    &__group {
+        display: flex;
+        flex-direction: column;
+
+        &:not(:last-child) {
+            margin-bottom: useRem(10);
+        }
+    }
+
+    &__select {
+        padding: useRem(5);
+    }
+
+    &__input {
+        padding: useRem(5);
+    }
+
+    &__label {
+        margin-bottom: useRem(5);
+    }
+
+    &__button {
+        font-weight: 600;
+        color: $dark-color;
+        padding: useRem(5) useRem(10);
+        border-radius: useRem(5);
+    }
+}

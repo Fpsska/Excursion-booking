@@ -12,7 +12,7 @@ const NavList: React.FC = () => {
             <ul className="nav__menu">
                 <li className="nav__item">
                     <NavLink
-                        className="nav__link"
+                        className="nav__link nav__link--main"
                         to="/NevaTrip-Task/"
                     >
                         HTML TASK
@@ -20,7 +20,7 @@ const NavList: React.FC = () => {
                 </li>
                 <li className="nav__item">
                     <NavLink
-                        className="nav__link"
+                        className="nav__link nav__link--js"
                         to="js-task"
                     >
                         JS TASK

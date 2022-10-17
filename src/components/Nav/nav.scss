@@ -17,12 +17,15 @@
     }
 
     &__link {
-        border-bottom: useRem(1) solid transparent;
         font-weight: 600;
         color: $dark-color;
     }
 
-    &__link.active {
-        border-color: blue;
+    &__link.nav__link--main.active {
+        color: orange;
+    }
+
+    &__link.nav__link--js.active {
+        color: $yellow-color;
     }
 }
