@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { Route, Routes } from 'react-router';
+
+import Layout from '../common/Layout';
 import MainPage from '../pages/MainPage';
 
 // /. imports
@@ -7,13 +10,18 @@ import MainPage from '../pages/MainPage';
 const App: React.FC = () => {
     return (
         <div className="App">
-            <div className="page">
-                <header className="header"></header>
-                <main className="main">
-                    <MainPage />
-                </main>
-                <footer className="footer"></footer>
-            </div>
+            <Routes>
+                <Route
+                    path="/NevaTrip-Task"
+                    element={<Layout />}
+                >
+                    <Route
+                        index
+                        element={<MainPage />}
+                    />
+                    <Route />
+                </Route>
+            </Routes>
         </div>
     );
 };
