@@ -34,9 +34,6 @@ body {
 }
 
 .services {
-    &__wrapper {
-        padding-top: useRem(26);
-    }
 
     &__list {
         display: grid;

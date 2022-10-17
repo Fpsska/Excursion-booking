@@ -4,6 +4,8 @@ import { Route, Routes } from 'react-router';
 
 import Layout from '../common/Layout';
 import MainPage from '../pages/MainPage';
+import JsTaskPage from '../pages/JsTaskPage';
+import NoFoundPage from '../pages/NoFoundPage';
 
 // /. imports
 
@@ -12,14 +14,21 @@ const App: React.FC = () => {
         <div className="App">
             <Routes>
                 <Route
-                    path="/NevaTrip-Task"
+                    path="NevaTrip-Task"
                     element={<Layout />}
                 >
                     <Route
                         index
                         element={<MainPage />}
                     />
-                    <Route />
+                    <Route
+                        path="js-task"
+                        element={<JsTaskPage />}
+                    />
+                    <Route
+                        path="*"
+                        element={<NoFoundPage />}
+                    />
                 </Route>
             </Routes>
         </div>
