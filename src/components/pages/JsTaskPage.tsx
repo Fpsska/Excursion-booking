@@ -7,25 +7,40 @@ import { addDeficientDigit } from '../../helpers/addDeficientDigit';
 const JsTaskPage: React.FC = () => {
     const [routeNameValue, setRouteNameValue] = useState<string>('из A в B');
 
-    const [startTimeValue, setStartTimeValue] = useState<string>('0');
-    const [endTimeValue, setEndTimeValue] = useState<string>('0');
+    const [startTimeValue, setStartTimeValue] = useState<string>('00:00');
+    const [endTimeValue, setEndTimeValue] = useState<string>('00:00');
     const [travelTimeValue, setTravelTimeValue] = useState<string>('50'); // one way time = 50 min
 
-    const [ticketsCountValue, setTicketsCountValue] = useState<number>(1);
+    const [ticketsCountValue, setTicketsCountValue] = useState<number>(0);
     const [ticketsPriceValue, setTicketsPriceValue] = useState<number>(0);
 
     useEffect(() => {
         // update endTimeValue
         const [hours, minutes] = startTimeValue.split(':');
+
         const totalMinutes = +hours * 60 + +minutes + +travelTimeValue;
         const totalConvertedMinutes = totalMinutes % 60;
         const totalHours = Math.floor(totalMinutes / 60);
+
         setEndTimeValue(
             `${addDeficientDigit(totalHours)}:${addDeficientDigit(
                 totalConvertedMinutes
             )}`
         );
     }, [startTimeValue]);
+
+    useEffect(() => {
+        // update travelTimeValue, ticketsPriceValue
+        switch (routeNameValue) {
+            case 'из A в B и обратно в А':
+                setTravelTimeValue(String(+travelTimeValue * 2));
+                setTicketsPriceValue(ticketsCountValue * 1200);
+                break;
+            default: // "из A в B" и "из B в A"
+                setTravelTimeValue('50');
+                setTicketsPriceValue(ticketsCountValue * 700);
+        }
+    }, [routeNameValue, ticketsCountValue]);
 
     return (
         <div className="timetable">
@@ -118,6 +133,7 @@ const JsTaskPage: React.FC = () => {
                             type="text"
                             id="num"
                             required
+                            autoFocus
                             onChange={e =>
                                 setTicketsCountValue(+e.target.value)
                             }
