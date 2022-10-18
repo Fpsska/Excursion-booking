@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import { addDeficientDigit } from '../../helpers/addDeficientDigit';
+import { declinateByNum } from '../../helpers/declinateByNum';
 
 // /.imports
 
@@ -11,6 +12,7 @@ const JsTaskPage: React.FC = () => {
     const [endTimeValue, setEndTimeValue] = useState<string>('00:00');
     const [travelTimeValue, setTravelTimeValue] = useState<string>('50'); // one way time = 50 min
 
+    const [ticketsTextValue, setTicketsTextValue] = useState<string>('билет');
     const [ticketsCountValue, setTicketsCountValue] = useState<number>(0);
     const [ticketsPriceValue, setTicketsPriceValue] = useState<number>(0);
 
@@ -50,6 +52,9 @@ const JsTaskPage: React.FC = () => {
                 setTravelTimeValue('50');
                 setTicketsPriceValue(ticketsCountValue * 700);
         }
+        setTicketsTextValue(
+            declinateByNum(ticketsCountValue, ['билет', 'билета', 'билетов'])
+        );
     }, [routeNameValue, ticketsCountValue]);
 
     const isFormValid = routeNameValue && startTimeValue && ticketsCountValue;
@@ -62,6 +67,13 @@ const JsTaskPage: React.FC = () => {
         formRef.current.reset();
         setTicketsCountValue(0);
         setDataCalculatedStatus(false);
+    };
+
+    const onInputTicketsChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        const validEventValue = e.target.value.replace(/[^0-9]/g, '');
+        setTicketsCountValue(+validEventValue);
     };
 
     return (
@@ -157,9 +169,9 @@ const JsTaskPage: React.FC = () => {
                             id="num"
                             required
                             autoFocus
-                            onChange={e =>
-                                setTicketsCountValue(+e.target.value)
-                            }
+                            autoComplete="off"
+                            value={ticketsCountValue}
+                            onChange={e => onInputTicketsChange(e)}
                         />
                     </fieldset>
                     <>
@@ -190,7 +202,7 @@ const JsTaskPage: React.FC = () => {
                         <div className="timetable__output">
                             <p className="timetable__output-text">
                                 Вы выбрали <strong>{ticketsCountValue}</strong>{' '}
-                                билета по маршруту{' '}
+                                {ticketsTextValue} по маршруту{' '}
                                 <strong>{routeNameValue}</strong> стоимостью{' '}
                                 <strong>{ticketsPriceValue} р</strong>.
                             </p>
