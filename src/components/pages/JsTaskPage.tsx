@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { addDeficientDigit } from '../../helpers/addDeficientDigit';
 
@@ -14,6 +14,16 @@ const JsTaskPage: React.FC = () => {
     const [ticketsCountValue, setTicketsCountValue] = useState<number>(0);
     const [ticketsPriceValue, setTicketsPriceValue] = useState<number>(0);
 
+    const [isDataCalculated, setDataCalculatedStatus] =
+        useState<boolean>(false);
+
+    const formRef = useRef<HTMLFormElement>(null!);
+
+    useEffect(() => {
+        // set initial startTimeValue
+        setStartTimeValue('18:00');
+    }, []);
+
     useEffect(() => {
         // update endTimeValue
         const [hours, minutes] = startTimeValue.split(':');
@@ -27,7 +37,7 @@ const JsTaskPage: React.FC = () => {
                 totalConvertedMinutes
             )}`
         );
-    }, [startTimeValue]);
+    }, [startTimeValue, travelTimeValue]);
 
     useEffect(() => {
         // update travelTimeValue, ticketsPriceValue
@@ -42,10 +52,23 @@ const JsTaskPage: React.FC = () => {
         }
     }, [routeNameValue, ticketsCountValue]);
 
+    const isFormValid = routeNameValue && startTimeValue && ticketsCountValue;
+
+    const onButtonCalcClick = (): void => {
+        setDataCalculatedStatus(true);
+    };
+
+    const onButtonResetClick = (): void => {
+        formRef.current.reset();
+        setTicketsCountValue(0);
+        setDataCalculatedStatus(false);
+    };
+
     return (
         <div className="timetable">
             <div className="timetable__wrapper">
                 <form
+                    ref={formRef}
                     className="timetable__form timetable-form"
                     onSubmit={e => e.preventDefault()}
                 >
@@ -139,31 +162,52 @@ const JsTaskPage: React.FC = () => {
                             }
                         />
                     </fieldset>
-                    <button
-                        className="timetable-form__button"
-                        type="submit"
-                    >
-                        Посчитать
-                    </button>
+                    <>
+                        {isDataCalculated ? (
+                            <button
+                                className="timetable-form__button timetable-form__button--reset"
+                                type="reset"
+                                onClick={onButtonResetClick}
+                            >
+                                Сбросить
+                            </button>
+                        ) : (
+                            <button
+                                className="timetable-form__button timetable-form__button--calc"
+                                type="submit"
+                                disabled={!isFormValid}
+                                onClick={() =>
+                                    isFormValid && onButtonCalcClick()
+                                }
+                            >
+                                Посчитать
+                            </button>
+                        )}
+                    </>
                 </form>
-                <div className="timetable__output">
-                    <p className="timetable__output-text">
-                        Вы выбрали <strong>{ticketsCountValue}</strong> билета
-                        по маршруту <strong>{routeNameValue}</strong> стоимостью{' '}
-                        <strong>{ticketsPriceValue} р</strong>.
-                    </p>
-                    <p className="timetable__output-text">
-                        {' '}
-                        Это путешествие займет у вас{' '}
-                        <strong>{travelTimeValue} минут</strong>.
-                    </p>
-                    <p className="timetable__output-text">
-                        {' '}
-                        Теплоход отправляется в{' '}
-                        <strong>{startTimeValue}</strong>, а прибудет в{' '}
-                        <strong>{endTimeValue}</strong>.
-                    </p>
-                </div>
+                <>
+                    {isDataCalculated && (
+                        <div className="timetable__output">
+                            <p className="timetable__output-text">
+                                Вы выбрали <strong>{ticketsCountValue}</strong>{' '}
+                                билета по маршруту{' '}
+                                <strong>{routeNameValue}</strong> стоимостью{' '}
+                                <strong>{ticketsPriceValue} р</strong>.
+                            </p>
+                            <p className="timetable__output-text">
+                                {' '}
+                                Это путешествие займет у вас{' '}
+                                <strong>{travelTimeValue} минут</strong>.
+                            </p>
+                            <p className="timetable__output-text">
+                                {' '}
+                                Теплоход отправляется в{' '}
+                                <strong>{startTimeValue}</strong>, а прибудет в{' '}
+                                <strong>{endTimeValue}</strong>.
+                            </p>
+                        </div>
+                    )}
+                </>
             </div>
         </div>
     );

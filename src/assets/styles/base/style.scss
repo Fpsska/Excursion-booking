@@ -72,6 +72,11 @@ body {
     &__form {
         margin-bottom: useRem(15);
     }
+
+    &__output {
+        overflow: hidden;
+    }
+
 }
 
 .timetable-form {
@@ -101,5 +106,28 @@ body {
         color: $dark-color;
         padding: useRem(5) useRem(10);
         border-radius: useRem(5);
+        transition: all .3s ease-in-out;
+    }
+
+
+    &__button--calc {
+        background-color: $yellow-color;
+
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+
+        &:hover {
+            background-color: rgba($color: $yellow-color, $alpha: .8);
+        }
+    }
+
+    &__button--reset {
+        background-color: $gray-color;
+
+        &:hover {
+            background-color: rgba($color: $gray-color, $alpha: .7);
+        }
     }
 }
