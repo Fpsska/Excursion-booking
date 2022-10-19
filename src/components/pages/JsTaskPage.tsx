@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import TimetableForm from '../TimetableForm/TimetableForm';
 
 import { addDeficientDigit } from '../../helpers/addDeficientDigit';
 import { declinateByNum } from '../../helpers/declinateByNum';
@@ -10,7 +12,7 @@ const JsTaskPage: React.FC = () => {
 
     const [startTimeValue, setStartTimeValue] = useState<string>('00:00');
     const [endTimeValue, setEndTimeValue] = useState<string>('00:00');
-    const [travelTimeValue, setTravelTimeValue] = useState<string>('50'); // one way time = 50 min
+    const [travelTimeValue, setTravelTimeValue] = useState<number>(50); // one way time = 50 min
 
     const [ticketsTextValue, setTicketsTextValue] = useState<string>('билет');
     const [ticketsCountValue, setTicketsCountValue] = useState<number>(0);
@@ -18,8 +20,6 @@ const JsTaskPage: React.FC = () => {
 
     const [isDataCalculated, setDataCalculatedStatus] =
         useState<boolean>(false);
-
-    const formRef = useRef<HTMLFormElement>(null!);
 
     useEffect(() => {
         // set initial startTimeValue
@@ -45,158 +45,32 @@ const JsTaskPage: React.FC = () => {
         // update travelTimeValue, ticketsPriceValue
         switch (routeNameValue) {
             case 'из A в B и обратно в А':
-                setTravelTimeValue(String(+travelTimeValue * 2));
+                setTravelTimeValue(travelTimeValue * 2);
                 setTicketsPriceValue(ticketsCountValue * 1200);
                 break;
             default: // "из A в B" и "из B в A"
-                setTravelTimeValue('50');
+                setTravelTimeValue(50);
                 setTicketsPriceValue(ticketsCountValue * 700);
         }
+        // update ticketsTextValue
         setTicketsTextValue(
             declinateByNum(ticketsCountValue, ['билет', 'билета', 'билетов'])
         );
     }, [routeNameValue, ticketsCountValue]);
 
-    const isFormValid = routeNameValue && startTimeValue && ticketsCountValue;
-
-    const onButtonCalcClick = (): void => {
-        setDataCalculatedStatus(true);
-    };
-
-    const onButtonResetClick = (): void => {
-        formRef.current.reset();
-        setTicketsCountValue(0);
-        setDataCalculatedStatus(false);
-    };
-
-    const onInputTicketsChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        const validEventValue = e.target.value.replace(/[^0-9]/g, '');
-        setTicketsCountValue(+validEventValue);
-    };
-
     return (
         <div className="timetable">
             <div className="timetable__wrapper">
-                <form
-                    ref={formRef}
-                    className="timetable__form timetable-form"
-                    onSubmit={e => e.preventDefault()}
-                >
-                    <fieldset className="timetable-form__group timetable-form__group--route">
-                        <label
-                            className="timetable-form__label"
-                            htmlFor="route"
-                        >
-                            Выберите направление
-                        </label>
-                        <select
-                            className="timetable-form__select"
-                            name="route"
-                            id="route"
-                            required
-                            onChange={e => setRouteNameValue(e.target.value)}
-                        >
-                            <option
-                                className="timetable-form__opt"
-                                value="из A в B"
-                            >
-                                из A в B
-                            </option>
-                            <option
-                                className="timetable-form__opt"
-                                value="из B в A"
-                            >
-                                из B в A
-                            </option>
-                            <option
-                                className="timetable-form__opt"
-                                value="из A в B и обратно в А"
-                            >
-                                из A в B и обратно в А
-                            </option>
-                        </select>
-                    </fieldset>
-                    <fieldset className="timetable-form__group timetable-form__group--time">
-                        <label
-                            className="timetable-form__label"
-                            htmlFor="time"
-                        >
-                            Выберите время
-                        </label>
-                        <select
-                            className="timetable-form__select"
-                            name="time"
-                            id="time"
-                            required
-                            onChange={e =>
-                                setStartTimeValue(
-                                    e.target.value.replace(/[^0-9:]/g, '')
-                                )
-                            }
-                        >
-                            <option
-                                className="timetable-form__opt"
-                                value="18:00(из A в B)"
-                            >
-                                18:00(из A в B)
-                            </option>
-                            <option
-                                className="timetable-form__opt"
-                                value="18:30(из A в B)"
-                            >
-                                18:30(из A в B)
-                            </option>
-                            <option
-                                className="timetable-form__opt"
-                                value="18:45(из A в B)"
-                            >
-                                18:45(из A в B)
-                            </option>
-                        </select>
-                    </fieldset>
-                    <fieldset className="timetable-form__group timetable-form__group--tickets">
-                        <label
-                            className="timetable-form__label"
-                            htmlFor="num"
-                        >
-                            Количество билетов
-                        </label>
-                        <input
-                            className="timetable-form__input"
-                            type="text"
-                            id="num"
-                            required
-                            autoFocus
-                            autoComplete="off"
-                            value={ticketsCountValue}
-                            onChange={e => onInputTicketsChange(e)}
-                        />
-                    </fieldset>
-                    <>
-                        {isDataCalculated ? (
-                            <button
-                                className="timetable-form__button timetable-form__button--reset"
-                                type="reset"
-                                onClick={onButtonResetClick}
-                            >
-                                Сбросить
-                            </button>
-                        ) : (
-                            <button
-                                className="timetable-form__button timetable-form__button--calc"
-                                type="submit"
-                                disabled={!isFormValid}
-                                onClick={() =>
-                                    isFormValid && onButtonCalcClick()
-                                }
-                            >
-                                Посчитать
-                            </button>
-                        )}
-                    </>
-                </form>
+                <TimetableForm
+                    routeNameValue={routeNameValue}
+                    startTimeValue={startTimeValue}
+                    ticketsCountValue={ticketsCountValue}
+                    isDataCalculated={isDataCalculated}
+                    setRouteNameValue={setRouteNameValue}
+                    setStartTimeValue={setStartTimeValue}
+                    setDataCalculatedStatus={setDataCalculatedStatus}
+                    setTicketsCountValue={setTicketsCountValue}
+                />
                 <>
                     {isDataCalculated && (
                         <div className="timetable__output">
