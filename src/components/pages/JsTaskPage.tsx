@@ -32,7 +32,13 @@ const JsTaskPage: React.FC = () => {
 
         const totalMinutes = +hours * 60 + +minutes + +travelTimeValue;
         const totalConvertedMinutes = totalMinutes % 60;
-        const totalHours = Math.floor(totalMinutes / 60);
+        let totalHours = Math.floor(totalMinutes / 60);
+
+        if (totalHours >= 24) {
+            // for allow 24-hours time format
+            console.log(totalHours, totalHours);
+            totalHours = 0;
+        }
 
         setEndTimeValue(
             `${addDeficientDigit(totalHours)}:${addDeficientDigit(

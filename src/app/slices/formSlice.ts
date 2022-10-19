@@ -65,7 +65,7 @@ const initialState: formSliceState = {
         },
         {
             id: 10,
-            value: '19:15(из B в A)'
+            value: '23:55(из B в A)'
         },
         {
             id: 11,
@@ -73,11 +73,11 @@ const initialState: formSliceState = {
         },
         {
             id: 12,
-            value: '21:50(из B в A)'
+            value: '23:50(из B в A)'
         },
         {
             id: 13,
-            value: '21:55(из B в A)'
+            value: '09:55(из B в A)'
         }
     ]
 };
