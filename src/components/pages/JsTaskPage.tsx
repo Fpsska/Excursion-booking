@@ -45,7 +45,7 @@ const JsTaskPage: React.FC = () => {
         // update travelTimeValue, ticketsPriceValue
         switch (routeNameValue) {
             case 'из A в B и обратно в А':
-                setTravelTimeValue(travelTimeValue * 2);
+                setTravelTimeValue(100);
                 setTicketsPriceValue(ticketsCountValue * 1200);
                 break;
             default: // "из A в B" и "из B в A"
