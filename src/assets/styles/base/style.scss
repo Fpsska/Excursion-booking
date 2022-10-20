@@ -77,6 +77,10 @@ body {
         overflow: hidden;
     }
 
+    &__zone {
+        margin-bottom: useRem(20);
+    }
+
 }
 
 .timetable-form {
@@ -130,4 +134,17 @@ body {
             background-color: rgba($color: $gray-color, $alpha: .7);
         }
     }
+}
+
+.zone {
+    display: flex;
+    background-color: $gray-color;
+    padding: useRem(10) useRem(5);
+
+    &__information {
+        &:not(:last-child) {
+            margin-right: useRem(10);
+        }
+    }
+
 }

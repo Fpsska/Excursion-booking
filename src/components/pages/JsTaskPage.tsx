@@ -21,9 +21,19 @@ const JsTaskPage: React.FC = () => {
     const [isDataCalculated, setDataCalculatedStatus] =
         useState<boolean>(false);
 
+    const [timeZone, setTimeZone] = useState<string>('');
+    const [timeZoneOffset, setTimeZoneOffset] = useState<number>(0);
+
     useEffect(() => {
         // set initial startTimeValue
         setStartTimeValue('18:00');
+
+        // set user's timezone information
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        setTimeZone(timezone);
+
+        const timeZoneOffset = new Date().getTimezoneOffset();
+        setTimeZoneOffset(timeZoneOffset);
     }, []);
 
     useEffect(() => {
@@ -35,8 +45,7 @@ const JsTaskPage: React.FC = () => {
         let totalHours = Math.floor(totalMinutes / 60);
 
         if (totalHours >= 24) {
-            // for allow 24-hours time format
-            console.log(totalHours, totalHours);
+            // for correct work with 24-hours time format
             totalHours = 0;
         }
 
@@ -67,6 +76,17 @@ const JsTaskPage: React.FC = () => {
     return (
         <div className="timetable">
             <div className="timetable__wrapper">
+                <ul className="timetable__zone zone">
+                    <li className="zone__information">
+                        Your timezone: <b>{timeZone}</b>
+                    </li>
+                    <li className="zone__information">
+                        Your timezone offset:
+                        <b>{timeZoneOffset} min.</b>
+                        {''} / {''}
+                        <b>{timeZoneOffset / 60} hrs.</b>
+                    </li>
+                </ul>
                 <TimetableForm
                     routeNameValue={routeNameValue}
                     startTimeValue={startTimeValue}
