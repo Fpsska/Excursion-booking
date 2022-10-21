@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
+import { useAppDispatch } from '../../app/hooks';
+
 import TimetableForm from '../TimetableForm/TimetableForm';
+
+import { fetchRoutesData } from '../../app/api/fetchRoutesData';
 
 import { addDeficientDigit } from '../../helpers/addDeficientDigit';
 import { declinateByNum } from '../../helpers/declinateByNum';
@@ -24,7 +28,12 @@ const JsTaskPage: React.FC = () => {
     const [timeZone, setTimeZone] = useState<string>('');
     const [timeZoneOffset, setTimeZoneOffset] = useState<number>(0);
 
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
+        // get routesData[],timesData[] from API
+        dispatch(fetchRoutesData());
+
         // set initial startTimeValue
         setStartTimeValue('18:00');
 

@@ -1,85 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Iroute, Itime } from '../../types/timetableFormTypes';
+
+import { fetchRoutesData } from '../api/fetchRoutesData';
+
 
 // /. imports
 
 interface formSliceState {
     routesData: Iroute[]
     timesData: Itime[]
+    routesDataFetchStatus: string
+    routesDataErrorStatus: any
 }
 
 // /. interfaces
 
 const initialState: formSliceState = {
-    routesData: [
-        {
-            id: 1,
-            value: 'из A в B'
-        },
-        {
-            id: 2,
-            value: 'из B в A'
-        },
-        {
-            id: 3,
-            value: 'из A в B и обратно в А'
-        }
-    ],
-    timesData: [
-        {
-            id: 1,
-            value: '18:00(из A в B)'
-        },
-        {
-            id: 2,
-            value: '18:30(из A в B)'
-        },
-        {
-            id: 3,
-            value: '18:45(из A в B)'
-        },
-        {
-            id: 4,
-            value: '19:00(из A в B)'
-        },
-        {
-            id: 5,
-            value: '19:15(из A в B)'
-        },
-        {
-            id: 6,
-            value: '21:00(из A в B)'
-        },
-        {
-            id: 7,
-            value: '18:30(из B в A)'
-        },
-        {
-            id: 8,
-            value: '18:45(из B в A)'
-        },
-        {
-            id: 9,
-            value: '19:00(из B в A)'
-        },
-        {
-            id: 10,
-            value: '23:55(из B в A)'
-        },
-        {
-            id: 11,
-            value: '19:35(из B в A)'
-        },
-        {
-            id: 12,
-            value: '23:50(из B в A)'
-        },
-        {
-            id: 13,
-            value: '09:55(из B в A)'
-        }
-    ]
+    routesData: [],
+    timesData: [],
+    routesDataFetchStatus: '',
+    routesDataErrorStatus: null
 };
 
 // /. initialState
@@ -89,6 +30,24 @@ const formSlice = createSlice({
     initialState,
     reducers: {
 
+    },
+    extraReducers: {
+        [fetchRoutesData.pending.type]: (state) => {
+            state.routesDataFetchStatus = 'loading';
+        },
+        [fetchRoutesData.fulfilled.type]: (state, action: PayloadAction<any>) => {
+            const { timesData, routesName } = action.payload;
+
+            state.timesData = timesData;
+            state.routesDataFetchStatus = 'success';
+            state.routesDataErrorStatus = null;
+
+            state.routesData = routesName;
+        },
+        [fetchRoutesData.rejected.type]: (state, action: PayloadAction<string>) => {
+            state.routesDataFetchStatus = 'failed';
+            state.routesDataErrorStatus = action.payload;
+        }
     }
 });
 
