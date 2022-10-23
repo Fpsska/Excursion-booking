@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 import TimetableForm from '../TimetableForm/TimetableForm';
 
 import { fetchRoutesData } from '../../app/api/fetchRoutesData';
+import { setConvertedTimesData } from '../../app/slices/formSlice';
 
 import { addDeficientDigit } from '../../helpers/addDeficientDigit';
 import { declinateByNum } from '../../helpers/declinateByNum';
+
+import { makeTimeConverting } from '../../helpers/makeTimeConverting';
 
 // /.imports
 
@@ -25,45 +28,22 @@ const JsTaskPage: React.FC = () => {
     const [isDataCalculated, setDataCalculatedStatus] =
         useState<boolean>(false);
 
-    const [timeZone, setTimeZone] = useState<string>('');
-    const [timeZoneOffset, setTimeZoneOffset] = useState<number>(0);
-
+    const { timesData } = useAppSelector(state => state.formSlice);
     const dispatch = useAppDispatch();
 
+    const { updatedTimesData, timezoneName, timeZoneOffset } =
+        makeTimeConverting(timesData, travelTimeValue);
+
     useEffect(() => {
-        // get routesData[],timesData[] from API
+        // get routesData[], timesData[] from API
         dispatch(fetchRoutesData());
 
-        // set initial startTimeValue
-        setStartTimeValue('18:00');
-
-        // set user's timezone information
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        setTimeZone(timezone);
-
-        const timeZoneOffset = new Date().getTimezoneOffset();
-        setTimeZoneOffset(timeZoneOffset);
+        // setStartTimeValue('18:00');
     }, []);
 
     useEffect(() => {
-        // update endTimeValue
-        const [hours, minutes] = startTimeValue.split(':');
-
-        const totalMinutes = +hours * 60 + +minutes + +travelTimeValue;
-        const totalConvertedMinutes = totalMinutes % 60;
-        let totalHours = Math.floor(totalMinutes / 60);
-
-        if (totalHours >= 24) {
-            // for correct work with 24-hours time format
-            totalHours = 0;
-        }
-
-        setEndTimeValue(
-            `${addDeficientDigit(totalHours)}:${addDeficientDigit(
-                totalConvertedMinutes
-            )}`
-        );
-    }, [startTimeValue, travelTimeValue]);
+        dispatch(setConvertedTimesData(updatedTimesData));
+    }, [timesData]);
 
     useEffect(() => {
         // update travelTimeValue, ticketsPriceValue
@@ -87,10 +67,10 @@ const JsTaskPage: React.FC = () => {
             <div className="timetable__wrapper">
                 <ul className="timetable__zone zone">
                     <li className="zone__information">
-                        Your timezone: <b>{timeZone}</b>
+                        Your timezone: <b>{timezoneName}</b>
                     </li>
                     <li className="zone__information">
-                        Your timezone offset:
+                        Your timezone offset: {''}
                         <b>{timeZoneOffset} min.</b>
                         {''} / {''}
                         <b>{timeZoneOffset / 60} hrs.</b>

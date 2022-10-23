@@ -10,6 +10,7 @@ import { fetchRoutesData } from '../api/fetchRoutesData';
 interface formSliceState {
     routesData: Iroute[]
     timesData: Itime[]
+    convertedTimesData: Itime[]
     routesDataFetchStatus: string
     routesDataErrorStatus: any
 }
@@ -19,6 +20,7 @@ interface formSliceState {
 const initialState: formSliceState = {
     routesData: [],
     timesData: [],
+    convertedTimesData: [],
     routesDataFetchStatus: '',
     routesDataErrorStatus: null
 };
@@ -29,7 +31,10 @@ const formSlice = createSlice({
     name: 'formSlice',
     initialState,
     reducers: {
-
+        setConvertedTimesData(state, action: PayloadAction<Itime[]>) {
+            console.log(action.payload)
+            state.convertedTimesData = action.payload;
+        }
     },
     extraReducers: {
         [fetchRoutesData.pending.type]: (state) => {
@@ -51,6 +56,6 @@ const formSlice = createSlice({
     }
 });
 
-// export const { } = formSlice.actions;
+export const { setConvertedTimesData } = formSlice.actions;
 
 export default formSlice.reducer;

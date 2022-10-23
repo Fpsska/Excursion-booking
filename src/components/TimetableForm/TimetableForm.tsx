@@ -33,7 +33,11 @@ const TimetableForm: React.FC<propTypes> = props => {
         setTicketsCountValue
     } = props;
 
-    const { routesData, timesData } = useAppSelector(state => state.formSlice);
+    const { routesData, timesData, convertedTimesData } = useAppSelector(
+        state => state.formSlice
+    );
+
+    // console.log(convertedTimesData);
 
     const formRef = useRef<HTMLFormElement>(null!);
 
@@ -104,7 +108,7 @@ const TimetableForm: React.FC<propTypes> = props => {
                         )
                     }
                 >
-                    {timesData.map((time: Itime) => {
+                    {convertedTimesData.map((time: Itime) => {
                         return (
                             <TimetableFormOpt
                                 key={time.id}
