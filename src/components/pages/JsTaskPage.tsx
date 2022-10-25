@@ -7,14 +7,14 @@ import TimetableForm from '../TimetableForm/TimetableForm';
 import { fetchRoutesData } from '../../app/api/fetchRoutesData';
 
 import { declinateByNum } from '../../helpers/declinateByNum';
-
 import { getTimeZoneInfo } from '../../helpers/getTimeZoneInfo';
 import { getConvertedData } from '../../helpers/getConvertedData';
+import { calcRouteEndTimeValue } from '../../helpers/calcRouteEndTimeValue';
 
 // /.imports
 
 const JsTaskPage: React.FC = () => {
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<any[]>([]); // RENAME
 
     const [routeNameValue, setRouteNameValue] = useState<string>('из A в B');
 
@@ -47,6 +47,11 @@ const JsTaskPage: React.FC = () => {
             })
         );
     }, [timesData, travelTimeValue]);
+
+    useEffect(() => {
+        // update endTimeValue
+        setEndTimeValue(calcRouteEndTimeValue(startTimeValue, travelTimeValue));
+    }, [startTimeValue, travelTimeValue]);
 
     useEffect(() => {
         // update travelTimeValue, ticketsPriceValue
