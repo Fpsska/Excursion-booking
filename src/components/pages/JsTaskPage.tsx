@@ -5,16 +5,17 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import TimetableForm from '../TimetableForm/TimetableForm';
 
 import { fetchRoutesData } from '../../app/api/fetchRoutesData';
-import { setConvertedTimesData } from '../../app/slices/formSlice';
 
-import { addDeficientDigit } from '../../helpers/addDeficientDigit';
 import { declinateByNum } from '../../helpers/declinateByNum';
 
-import { makeTimeConverting } from '../../helpers/makeTimeConverting';
+import { getTimeZoneInfo } from '../../helpers/getTimeZoneInfo';
+import { getConvertedData } from '../../helpers/getConvertedData';
 
 // /.imports
 
 const JsTaskPage: React.FC = () => {
+    const [data, setData] = useState<any[]>([]);
+
     const [routeNameValue, setRouteNameValue] = useState<string>('из A в B');
 
     const [startTimeValue, setStartTimeValue] = useState<string>('00:00');
@@ -31,19 +32,22 @@ const JsTaskPage: React.FC = () => {
     const { timesData } = useAppSelector(state => state.formSlice);
     const dispatch = useAppDispatch();
 
-    const { updatedTimesData, timezoneName, timeZoneOffset } =
-        makeTimeConverting(timesData, travelTimeValue);
+    const { timeZoneName, timeZoneOffset } = getTimeZoneInfo();
 
     useEffect(() => {
         // get routesData[], timesData[] from API
         dispatch(fetchRoutesData());
-
-        // setStartTimeValue('18:00');
     }, []);
 
     useEffect(() => {
-        dispatch(setConvertedTimesData(updatedTimesData));
-    }, [timesData]);
+        setData(
+            getConvertedData({
+                array: timesData,
+                travelTimeValue,
+                timeZoneOffset
+            })
+        );
+    }, [timesData, travelTimeValue]);
 
     useEffect(() => {
         // update travelTimeValue, ticketsPriceValue
@@ -67,7 +71,7 @@ const JsTaskPage: React.FC = () => {
             <div className="timetable__wrapper">
                 <ul className="timetable__zone zone">
                     <li className="zone__information">
-                        Your timezone: <b>{timezoneName}</b>
+                        Your timezone: <b>{timeZoneName}</b>
                     </li>
                     <li className="zone__information">
                         Your timezone offset: {''}
@@ -85,6 +89,7 @@ const JsTaskPage: React.FC = () => {
                     setStartTimeValue={setStartTimeValue}
                     setDataCalculatedStatus={setDataCalculatedStatus}
                     setTicketsCountValue={setTicketsCountValue}
+                    timeArray={data}
                 />
                 <>
                     {isDataCalculated && (
