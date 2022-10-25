@@ -4,7 +4,6 @@ import { addDeficientDigit } from './addDeficientDigit';
 
 interface propTypes {
     array: any[]
-    travelTimeValue: number
     timeZoneOffset: number
 }
 
@@ -12,7 +11,7 @@ interface propTypes {
 
 export function getConvertedData(props: propTypes): any[] {
 
-    const { array, travelTimeValue, timeZoneOffset } = props;
+    const { array, timeZoneOffset } = props;
 
     let totalMinutes = 0;
     let totalConvertedMinutes = 0;
@@ -23,7 +22,7 @@ export function getConvertedData(props: propTypes): any[] {
         const itemValue = item.value.replace(/[^0-9:]/g, '').split(':'); // ['21', '55']
 
         routeName = item.value.replace(/[^а-яa-z()\s]/gi, '');
-        totalMinutes = (+itemValue[0] * 60) + +itemValue[1] + timeZoneOffset + travelTimeValue;
+        totalMinutes = (+itemValue[0] * 60) + +itemValue[1] + timeZoneOffset;
         totalConvertedMinutes = totalMinutes % 60;
         totalHours = Math.floor(totalMinutes / 60);
 

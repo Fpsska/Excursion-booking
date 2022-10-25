@@ -43,7 +43,6 @@ const JsTaskPage: React.FC = () => {
         setData(
             getConvertedData({
                 array: timesData,
-                travelTimeValue,
                 timeZoneOffset
             })
         );
