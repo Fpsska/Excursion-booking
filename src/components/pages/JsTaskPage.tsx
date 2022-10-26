@@ -36,7 +36,9 @@ const JsTaskPage: React.FC = () => {
 
     useEffect(() => {
         // get routesData[], timesData[] from API
-        dispatch(fetchRoutesData());
+        setTimeout(() => {
+            dispatch(fetchRoutesData());
+        }, 1000);
     }, []);
 
     useEffect(() => {

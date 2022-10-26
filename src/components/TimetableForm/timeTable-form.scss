@@ -1,0 +1,66 @@
+@import '../../assets/styles/abstracts/functions';
+
+// /. imports
+
+.timetable-form {
+    &__group {
+        display: flex;
+        flex-direction: column;
+
+        &:not(:last-child) {
+            margin-bottom: useRem(10);
+        }
+    }
+
+    &__select {
+        padding: useRem(5);
+        border: $dark-color 1px solid;
+
+        &:disabled {
+            cursor: not-allowed;
+            border: orange 1px solid;
+            color: $dark-color;
+        }
+    }
+
+    &__input {
+        padding: useRem(5);
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    &__label {
+        margin-bottom: useRem(5);
+    }
+
+    &__button {
+        font-weight: 600;
+        color: $dark-color;
+        padding: useRem(5) useRem(10);
+        border-radius: useRem(5);
+        transition: all .3s ease-in-out;
+    }
+
+
+    &__button--calc {
+        background-color: $yellow-color;
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+
+        &:hover {
+            background-color: rgba($color: $yellow-color, $alpha: .8);
+        }
+    }
+
+    &__button--reset {
+        background-color: $gray-color;
+
+        &:hover {
+            background-color: rgba($color: $gray-color, $alpha: .7);
+        }
+    }
+}

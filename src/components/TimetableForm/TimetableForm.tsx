@@ -5,6 +5,9 @@ import { useAppSelector } from '../../app/hooks';
 import { Iroute, Itime } from '../../types/timetableFormTypes';
 
 import TimetableFormOpt from './TimetableFormOpt';
+import PlaceholderOption from './PlaceholderOption';
+
+import './timeTable-form.scss';
 
 // /. imports
 
@@ -37,15 +40,18 @@ const TimetableForm: React.FC<propTypes> = props => {
         timeArray
     } = props;
 
-    const { routesData, timesData, convertedTimesData } = useAppSelector(
-        state => state.formSlice
-    );
-
-    // console.log(convertedTimesData);
+    const {
+        routesData,
+        routesDataErrorStatus,
+        routesDataFetchStatus,
+        convertedTimesData
+    } = useAppSelector(state => state.formSlice);
 
     const formRef = useRef<HTMLFormElement>(null!);
 
     const isFormValid = routeNameValue && startTimeValue && ticketsCountValue;
+    const isFormControlsActive =
+        !routesDataErrorStatus && routesDataFetchStatus === 'success';
 
     const onButtonCalcClick = (): void => {
         setDataCalculatedStatus(true);
@@ -82,16 +88,25 @@ const TimetableForm: React.FC<propTypes> = props => {
                     name="route"
                     id="route"
                     required
+                    disabled={!isFormControlsActive}
                     onChange={e => setRouteNameValue(e.target.value)}
                 >
-                    {routesData.map((route: Iroute) => {
-                        return (
-                            <TimetableFormOpt
-                                key={route.id}
-                                {...route}
-                            />
-                        );
-                    })}
+                    {isFormControlsActive ? (
+                        <>
+                            {routesData.map((route: Iroute) => {
+                                return (
+                                    <TimetableFormOpt
+                                        key={route.id}
+                                        {...route}
+                                    />
+                                );
+                            })}
+                        </>
+                    ) : (
+                        <PlaceholderOption
+                            value={'loading routes names data...'}
+                        />
+                    )}
                 </select>
             </fieldset>
             <fieldset className="timetable-form__group timetable-form__group--time">
@@ -106,20 +121,29 @@ const TimetableForm: React.FC<propTypes> = props => {
                     name="time"
                     id="time"
                     required
+                    disabled={!isFormControlsActive}
                     onChange={e =>
                         setStartTimeValue(
                             e.target.value.replace(/[^0-9:]/g, '')
                         )
                     }
                 >
-                    {timeArray?.map((time: Itime) => {
-                        return (
-                            <TimetableFormOpt
-                                key={time.id}
-                                {...time}
-                            />
-                        );
-                    })}
+                    {isFormControlsActive ? (
+                        <>
+                            {timeArray?.map((time: Itime) => {
+                                return (
+                                    <TimetableFormOpt
+                                        key={time.id}
+                                        {...time}
+                                    />
+                                );
+                            })}
+                        </>
+                    ) : (
+                        <PlaceholderOption
+                            value={'loading routes time data...'}
+                        />
+                    )}
                 </select>
             </fieldset>
             <fieldset className="timetable-form__group timetable-form__group--tickets">
@@ -135,6 +159,7 @@ const TimetableForm: React.FC<propTypes> = props => {
                     id="num"
                     required
                     autoFocus
+                    disabled={!isFormControlsActive}
                     autoComplete="off"
                     value={ticketsCountValue}
                     onChange={e => onInputTicketsChange(e)}
@@ -154,7 +179,11 @@ const TimetableForm: React.FC<propTypes> = props => {
                         className="timetable-form__button timetable-form__button--calc"
                         type="submit"
                         disabled={!isFormValid}
-                        onClick={() => isFormValid && onButtonCalcClick()}
+                        onClick={() =>
+                            isFormValid &&
+                            !isFormControlsActive &&
+                            onButtonCalcClick()
+                        }
                     >
                         Посчитать
                     </button>
