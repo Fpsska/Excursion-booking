@@ -49,7 +49,10 @@ const TimetableForm: React.FC<propTypes> = props => {
 
     const formRef = useRef<HTMLFormElement>(null!);
 
-    const isFormValid = routeNameValue && startTimeValue && ticketsCountValue;
+    const isFormValid = Boolean(
+        routeNameValue && startTimeValue && ticketsCountValue
+    );
+
     const isFormControlsActive =
         !routesDataErrorStatus && routesDataFetchStatus === 'success';
 
@@ -178,12 +181,8 @@ const TimetableForm: React.FC<propTypes> = props => {
                     <button
                         className="timetable-form__button timetable-form__button--calc"
                         type="submit"
-                        disabled={!isFormValid}
-                        onClick={() =>
-                            isFormValid &&
-                            !isFormControlsActive &&
-                            onButtonCalcClick()
-                        }
+                        disabled={!isFormValid || !isFormControlsActive}
+                        onClick={onButtonCalcClick}
                     >
                         Посчитать
                     </button>
