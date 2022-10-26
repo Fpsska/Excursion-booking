@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
+import { setConvertedTimesData } from '../../app/slices/formSlice';
+
 import TimetableForm from '../TimetableForm/TimetableForm';
 
 import { fetchRoutesData } from '../../app/api/fetchRoutesData';
@@ -9,13 +11,11 @@ import { fetchRoutesData } from '../../app/api/fetchRoutesData';
 import { declinateByNum } from '../../helpers/declinateByNum';
 import { getTimeZoneInfo } from '../../helpers/getTimeZoneInfo';
 import { getConvertedData } from '../../helpers/getConvertedData';
-import { calcRouteEndTimeValue } from '../../helpers/calcRouteEndTimeValue';
+import { calcRouteTimeValue } from '../../helpers/calcRouteTimeValue';
 
 // /.imports
 
 const JsTaskPage: React.FC = () => {
-    const [data, setData] = useState<any[]>([]); // RENAME
-
     const [routeNameValue, setRouteNameValue] = useState<string>('из A в B');
 
     const [startTimeValue, setStartTimeValue] = useState<string>('00:00');
@@ -29,7 +29,9 @@ const JsTaskPage: React.FC = () => {
     const [isDataCalculated, setDataCalculatedStatus] =
         useState<boolean>(false);
 
-    const { timesData } = useAppSelector(state => state.formSlice);
+    const { timesData, convertedTimesData } = useAppSelector(
+        state => state.formSlice
+    );
     const dispatch = useAppDispatch();
 
     const { timeZoneName, timeZoneOffset } = getTimeZoneInfo();
@@ -42,17 +44,29 @@ const JsTaskPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        setData(
-            getConvertedData({
-                array: timesData,
-                timeZoneOffset
-            })
+        // fill new (converted) times array
+        dispatch(
+            setConvertedTimesData(
+                getConvertedData({
+                    array: timesData,
+                    timeZoneOffset
+                })
+            )
         );
     }, [timesData, travelTimeValue]);
 
     useEffect(() => {
+        // update startTimeValue
+        setStartTimeValue(
+            calcRouteTimeValue({ startTimeValue: convertedTimesData[0]?.value })
+        );
+    }, [convertedTimesData]);
+
+    useEffect(() => {
         // update endTimeValue
-        setEndTimeValue(calcRouteEndTimeValue(startTimeValue, travelTimeValue));
+        setEndTimeValue(
+            calcRouteTimeValue({ startTimeValue, travelTimeValue })
+        );
     }, [startTimeValue, travelTimeValue]);
 
     useEffect(() => {
@@ -95,7 +109,6 @@ const JsTaskPage: React.FC = () => {
                     setStartTimeValue={setStartTimeValue}
                     setDataCalculatedStatus={setDataCalculatedStatus}
                     setTicketsCountValue={setTicketsCountValue}
-                    timeArray={data}
                 />
                 <>
                     {isDataCalculated && (

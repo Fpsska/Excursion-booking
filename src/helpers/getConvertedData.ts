@@ -19,7 +19,7 @@ export function getConvertedData(props: propTypes): any[] {
     let routeName = '';
 
     const convertedTimeArray = array.map((item: any) => {
-        const itemValue = item.value.replace(/[^0-9:]/g, '').split(':'); // ['21', '55']
+        const itemValue = item.value.replace(/[^0-9:]/g, '').split(':'); // ['21', '55'] 
 
         routeName = item.value.replace(/[^а-яa-z()\s]/gi, '');
         totalMinutes = (+itemValue[0] * 60) + +itemValue[1] + timeZoneOffset;

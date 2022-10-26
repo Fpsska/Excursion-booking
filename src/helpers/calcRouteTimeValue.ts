@@ -2,8 +2,16 @@ import { addDeficientDigit } from './addDeficientDigit';
 
 // /. imports
 
-export function calcRouteEndTimeValue(startTimeValue: string, travelTimeValue: number): string {
-    const [hours, minutes] = startTimeValue.split(':'); // ['21', '55']
+interface propTypes {
+    startTimeValue: string
+    travelTimeValue?: number
+}
+
+export function calcRouteTimeValue(props: propTypes): string {
+
+    const { startTimeValue = '00:00', travelTimeValue = 0 } = props;
+
+    const [hours, minutes] = startTimeValue.replace(/[^0-9:]/g, '').split(':'); // ['21', '55']
 
     const totalMinutes = +hours * 60 + +minutes + +travelTimeValue;
     const totalConvertedMinutes = totalMinutes % 60;

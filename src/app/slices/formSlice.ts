@@ -32,7 +32,6 @@ const formSlice = createSlice({
     initialState,
     reducers: {
         setConvertedTimesData(state, action: PayloadAction<Itime[]>) {
-            console.log(action.payload)
             state.convertedTimesData = action.payload;
         }
     },

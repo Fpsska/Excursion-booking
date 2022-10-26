@@ -20,8 +20,6 @@ interface propTypes {
     setStartTimeValue: (arg: string) => void;
     setDataCalculatedStatus: (arg: boolean) => void;
     setTicketsCountValue: (arg: number) => void;
-
-    timeArray: any[];
 }
 
 // /. interfaces
@@ -35,9 +33,7 @@ const TimetableForm: React.FC<propTypes> = props => {
         setRouteNameValue,
         setStartTimeValue,
         setDataCalculatedStatus,
-        setTicketsCountValue,
-
-        timeArray
+        setTicketsCountValue
     } = props;
 
     const {
@@ -133,7 +129,7 @@ const TimetableForm: React.FC<propTypes> = props => {
                 >
                     {isFormControlsActive ? (
                         <>
-                            {timeArray?.map((time: Itime) => {
+                            {convertedTimesData?.map((time: Itime) => {
                                 return (
                                     <TimetableFormOpt
                                         key={time.id}
