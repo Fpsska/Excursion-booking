@@ -12,8 +12,6 @@ import './timeTable-form.scss';
 // /. imports
 
 interface propTypes {
-    routeNameValue: string;
-    startTimeValue: string;
     ticketsCountValue: number;
     isDataCalculated: boolean;
     setRouteNameValue: (arg: string) => void;
@@ -26,8 +24,6 @@ interface propTypes {
 
 const TimetableForm: React.FC<propTypes> = props => {
     const {
-        routeNameValue,
-        startTimeValue,
         ticketsCountValue,
         isDataCalculated,
         setRouteNameValue,
@@ -45,9 +41,7 @@ const TimetableForm: React.FC<propTypes> = props => {
 
     const formRef = useRef<HTMLFormElement>(null!);
 
-    const isFormValid = Boolean(
-        routeNameValue && startTimeValue && ticketsCountValue
-    );
+    const isFormValid = ticketsCountValue > 0;
 
     const isFormControlsActive =
         !routesDataErrorStatus && routesDataFetchStatus === 'success';

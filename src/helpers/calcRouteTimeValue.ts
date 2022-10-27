@@ -8,12 +8,11 @@ interface propTypes {
 }
 
 export function calcRouteTimeValue(props: propTypes): string {
-
-    const { startTimeValue = '00:00', travelTimeValue = 0 } = props;
+    const { startTimeValue, travelTimeValue = 0 } = props;
 
     const [hours, minutes] = startTimeValue.replace(/[^0-9:]/g, '').split(':'); // ['21', '55']
 
-    const totalMinutes = +hours * 60 + +minutes + +travelTimeValue;
+    const totalMinutes = (+hours * 60) + +minutes + +travelTimeValue;
     const totalConvertedMinutes = totalMinutes % 60;
     let totalHours = Math.floor(totalMinutes / 60);
 

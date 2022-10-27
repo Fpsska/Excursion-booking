@@ -16,11 +16,11 @@ import { calcRouteTimeValue } from '../../helpers/calcRouteTimeValue';
 // /.imports
 
 const JsTaskPage: React.FC = () => {
-    const [routeNameValue, setRouteNameValue] = useState<string>('из A в B');
+    const [routeNameValue, setRouteNameValue] = useState<string>('');
 
-    const [startTimeValue, setStartTimeValue] = useState<string>('00:00');
-    const [endTimeValue, setEndTimeValue] = useState<string>('00:00');
-    const [travelTimeValue, setTravelTimeValue] = useState<number>(50); // one way time = 50 min
+    const [startTimeValue, setStartTimeValue] = useState<string>('');
+    const [endTimeValue, setEndTimeValue] = useState<string>('');
+    const [travelTimeValue, setTravelTimeValue] = useState<number>(50);
 
     const [ticketsTextValue, setTicketsTextValue] = useState<string>('билет');
     const [ticketsCountValue, setTicketsCountValue] = useState<number>(0);
@@ -53,14 +53,25 @@ const JsTaskPage: React.FC = () => {
                 })
             )
         );
-    }, [timesData, travelTimeValue]);
+    }, [timesData, timeZoneOffset]);
 
     useEffect(() => {
-        // update startTimeValue
-        setStartTimeValue(
-            calcRouteTimeValue({ startTimeValue: convertedTimesData[0]?.value })
-        );
-    }, [convertedTimesData]);
+        // set initial routeNameValue
+        if (!routeNameValue && isDataCalculated) {
+            setRouteNameValue(
+                convertedTimesData[0]?.value.replace(/[^а-яa-z\s]/gi, '')
+            );
+        }
+    }, [routeNameValue, isDataCalculated, convertedTimesData]);
+
+    useEffect(() => {
+        // set initial startTimeValue
+        if (!startTimeValue && isDataCalculated) {
+            setStartTimeValue(
+                convertedTimesData[0]?.value.replace(/[^0-9:]/g, '')
+            );
+        }
+    }, [startTimeValue, isDataCalculated, convertedTimesData]);
 
     useEffect(() => {
         // update endTimeValue
@@ -101,8 +112,6 @@ const JsTaskPage: React.FC = () => {
                     </li>
                 </ul>
                 <TimetableForm
-                    routeNameValue={routeNameValue}
-                    startTimeValue={startTimeValue}
                     ticketsCountValue={ticketsCountValue}
                     isDataCalculated={isDataCalculated}
                     setRouteNameValue={setRouteNameValue}
