@@ -25,10 +25,17 @@
 
     &__input {
         padding: useRem(5);
+        margin-bottom: useRem(5);
+        border: useRem(1) solid $dark-color;
 
         &:disabled {
             cursor: not-allowed;
         }
+    }
+
+    &__input.invalid {
+        border: useRem(1) solid red;
+        color: red;
     }
 
     &__label {
@@ -62,5 +69,9 @@
         &:hover {
             background-color: rgba($color: $gray-color, $alpha: .7);
         }
+    }
+
+    &__error {
+        color: red;
     }
 }

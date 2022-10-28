@@ -4,6 +4,8 @@ import { useAppSelector } from '../../app/hooks';
 
 import { Iroute, Itime } from '../../types/timetableFormTypes';
 
+import { useValidation } from '../../hooks/useValidation';
+
 import TimetableFormOpt from './TimetableFormOpt';
 import PlaceholderOption from './PlaceholderOption';
 
@@ -39,12 +41,22 @@ const TimetableForm: React.FC<propTypes> = props => {
         convertedTimesData
     } = useAppSelector(state => state.formSlice);
 
+    const ticketInput = useValidation(ticketsCountValue, {
+        minLength: 1,
+        maxLength: 10
+    });
+
     const formRef = useRef<HTMLFormElement>(null!);
 
-    const isFormValid = ticketsCountValue > 0;
+    const isFormValid =
+        ticketsCountValue >= ticketInput.minLengthCount &&
+        ticketsCountValue <= ticketInput.maxLengthCount;
 
     const isFormControlsActive =
         !routesDataErrorStatus && routesDataFetchStatus === 'success';
+
+    const isInputHasError =
+        ticketInput.isInputActive && !ticketInput.isInputValid;
 
     const onButtonCalcClick = (): void => {
         setDataCalculatedStatus(true);
@@ -147,7 +159,11 @@ const TimetableForm: React.FC<propTypes> = props => {
                     Количество билетов
                 </label>
                 <input
-                    className="timetable-form__input"
+                    className={
+                        isInputHasError
+                            ? 'timetable-form__input invalid'
+                            : 'timetable-form__input'
+                    }
                     type="text"
                     id="num"
                     required
@@ -155,8 +171,26 @@ const TimetableForm: React.FC<propTypes> = props => {
                     disabled={!isFormControlsActive}
                     autoComplete="off"
                     value={ticketsCountValue}
+                    onBlur={ticketInput.onInputBlur}
                     onChange={e => onInputTicketsChange(e)}
                 />
+                <>
+                    {isInputHasError && (
+                        <>
+                            {ticketInput.minLengthError ? (
+                                <span className="timetable-form__error">
+                                    min count tickets should be more{' '}
+                                    <b>{ticketInput.minLengthCount}</b>
+                                </span>
+                            ) : (
+                                <span className="timetable-form__error">
+                                    max count of tickets cannot be more than{' '}
+                                    <b>{ticketInput.maxLengthCount}</b>
+                                </span>
+                            )}
+                        </>
+                    )}
+                </>
             </fieldset>
             <>
                 {isDataCalculated ? (
