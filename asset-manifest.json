@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/NevaTrip-Task/static/css/main.4f1fde51.css",
-    "main.js": "/NevaTrip-Task/static/js/main.426b9490.js",
+    "main.css": "/NevaTrip-Task/static/css/main.2307d94b.css",
+    "main.js": "/NevaTrip-Task/static/js/main.67eee758.js",
     "static/js/787.7d2b7083.chunk.js": "/NevaTrip-Task/static/js/787.7d2b7083.chunk.js",
     "static/media/image-2.png": "/NevaTrip-Task/static/media/image-2.5497a9fe570f9f3cb677.png",
     "static/media/image-1.png": "/NevaTrip-Task/static/media/image-1.26f0ca799de1f6124bb0.png",
     "static/media/clock-icon.svg": "/NevaTrip-Task/static/media/clock-icon.fb4b5ac4b4faea6cb396.svg",
     "index.html": "/NevaTrip-Task/index.html",
     "static/media/check-mark-icon.svg": "/NevaTrip-Task/static/media/check-mark-icon.9140d4d53885657bf775.svg",
-    "main.4f1fde51.css.map": "/NevaTrip-Task/static/css/main.4f1fde51.css.map",
-    "main.426b9490.js.map": "/NevaTrip-Task/static/js/main.426b9490.js.map",
+    "main.2307d94b.css.map": "/NevaTrip-Task/static/css/main.2307d94b.css.map",
+    "main.67eee758.js.map": "/NevaTrip-Task/static/js/main.67eee758.js.map",
     "787.7d2b7083.chunk.js.map": "/NevaTrip-Task/static/js/787.7d2b7083.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4f1fde51.css",
-    "static/js/main.426b9490.js"
+    "static/css/main.2307d94b.css",
+    "static/js/main.67eee758.js"
   ]
 }
