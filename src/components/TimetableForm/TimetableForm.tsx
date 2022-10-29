@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 
 import { useAppSelector } from '../../app/hooks';
 
@@ -20,6 +20,7 @@ interface propTypes {
     setStartTimeValue: (arg: string) => void;
     setDataCalculatedStatus: (arg: boolean) => void;
     setTicketsCountValue: (arg: number) => void;
+    onDocKeyDownClick: (arg: any) => void;
 }
 
 // /. interfaces
@@ -31,7 +32,8 @@ const TimetableForm: React.FC<propTypes> = props => {
         setRouteNameValue,
         setStartTimeValue,
         setDataCalculatedStatus,
-        setTicketsCountValue
+        setTicketsCountValue,
+        onDocKeyDownClick
     } = props;
 
     const {
@@ -74,6 +76,19 @@ const TimetableForm: React.FC<propTypes> = props => {
         const validEventValue = e.target.value.replace(/[^0-9]/g, '');
         setTicketsCountValue(+validEventValue);
     };
+
+    useEffect(() => {
+        const validBtnCondition = !isInputHasError && isFormControlsActive;
+        document.addEventListener(
+            'keydown',
+            e => validBtnCondition && onDocKeyDownClick(e.key)
+        );
+        return () => {
+            document.removeEventListener('keydown', e =>
+                onDocKeyDownClick(e.key)
+            );
+        };
+    }, [isInputHasError, isFormControlsActive, onDocKeyDownClick]);
 
     return (
         <form

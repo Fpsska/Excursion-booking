@@ -57,6 +57,7 @@
     "eslint": "^8.25.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-react": "^7.31.10",
+    "eslint-plugin-react-hooks": "^5.0.0-next-cf3932be5-20221027",
     "gh-pages": "^4.0.0",
     "prettier": "^2.7.1"
   }

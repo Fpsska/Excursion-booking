@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
@@ -95,7 +95,20 @@ const JsTaskPage: React.FC = () => {
         setTicketsTextValue(
             declinateByNum(ticketsCountValue, ['билет', 'билета', 'билетов'])
         );
+        // reject count of tickets less 0
+        ticketsCountValue < 0 && setTicketsCountValue(0);
     }, [routeNameValue, ticketsCountValue]);
+
+    const onDocKeyDownClick = useCallback((key: string): void => {
+        switch (key) {
+            case 'ArrowUp':
+                setTicketsCountValue(prevCount => prevCount + 1);
+                break;
+            case 'ArrowDown':
+                setTicketsCountValue(prevCount => prevCount - 1);
+                break;
+        }
+    }, []);
 
     return (
         <div className="timetable">
@@ -118,6 +131,7 @@ const JsTaskPage: React.FC = () => {
                     setStartTimeValue={setStartTimeValue}
                     setDataCalculatedStatus={setDataCalculatedStatus}
                     setTicketsCountValue={setTicketsCountValue}
+                    onDocKeyDownClick={onDocKeyDownClick}
                 />
                 <>
                     {isDataCalculated && (

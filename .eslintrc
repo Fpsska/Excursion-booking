@@ -14,6 +14,7 @@
     ],
     "plugins": [
         "react",
+        "react-hooks",
         "@typescript-eslint",
         "import"
     ],
@@ -58,6 +59,7 @@
                 ],
                 "newlines-between": "always-and-inside-groups"
             }
-        ]
+        ],
+        "react-hooks/exhaustive-deps": "warn"
     }
 }
