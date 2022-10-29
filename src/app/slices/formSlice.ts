@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 
 import { Iroute, Itime } from '../../types/timetableFormTypes';
 
@@ -38,7 +38,7 @@ const formSlice = createSlice({
         },
         filterTimesData(state, action: PayloadAction<{ filterProp: string }>) {
             const { filterProp } = action.payload;
-            state.convertedTimesData = state.filteredTimesData.filter((item: Itime) => item.value.includes(filterProp));
+            state.timesData = state.filteredTimesData.filter((item: Itime) => item.value.includes(filterProp));
         }
     },
     extraReducers: {

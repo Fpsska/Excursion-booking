@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { useAppSelector } from '../../app/hooks';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+
+import { filterTimesData } from '../../app/slices/formSlice';
 
 import { Iroute, Itime } from '../../types/timetableFormTypes';
 
@@ -44,7 +46,9 @@ const TimetableForm: React.FC<propTypes> = props => {
         routesData,
         routesDataErrorStatus,
         routesDataFetchStatus,
-        convertedTimesData
+        convertedTimesData,
+        timesData,
+        filteredTimesData
     } = useAppSelector(state => state.formSlice);
 
     const [isTimesDataEmpty, setTimesDataEmptyStatus] =
@@ -56,6 +60,8 @@ const TimetableForm: React.FC<propTypes> = props => {
     });
 
     const formRef = useRef<HTMLFormElement>(null!);
+
+    const dispatch = useAppDispatch();
 
     // /. hooks
 
@@ -88,6 +94,12 @@ const TimetableForm: React.FC<propTypes> = props => {
         setTicketsCountValue(+validEventValue);
     };
 
+    const onSelectRouteChange = (
+        e: React.ChangeEvent<HTMLSelectElement>
+    ): void => {
+        setRouteNameValue(e.target.value);
+    };
+
     // /. functions
 
     useEffect(() => {
@@ -104,13 +116,21 @@ const TimetableForm: React.FC<propTypes> = props => {
     }, [isInputHasError, isFormControlsActive, onDocKeyDownClick]);
 
     useEffect(() => {
-        // handle convertedTimesData[] length
-        if (convertedTimesData.length === 0) {
+        // handle timesData[] length
+        if (timesData.length === 0) {
             setTimesDataEmptyStatus(true);
         } else {
             setTimesDataEmptyStatus(false);
         }
-    }, [convertedTimesData, routeNameValue]);
+    }, [timesData, routeNameValue]);
+
+    useEffect(() => {
+        // set initial timesData[] filtered by current prop after success getting API data
+        if (isFormControlsActive) {
+            setRouteNameValue('из A в B');
+            dispatch(filterTimesData({ filterProp: 'из A в B' }));
+        }
+    }, [isFormControlsActive]);
 
     // /. effects
 
@@ -132,8 +152,9 @@ const TimetableForm: React.FC<propTypes> = props => {
                     name="route"
                     id="route"
                     required
+                    value={routeNameValue}
                     disabled={!isFormControlsActive}
-                    onChange={e => setRouteNameValue(e.target.value)}
+                    onChange={e => onSelectRouteChange(e)}
                 >
                     {isFormControlsActive ? (
                         <>
@@ -178,7 +199,7 @@ const TimetableForm: React.FC<propTypes> = props => {
                                 <PlaceholderOption value={'no matched yet'} />
                             ) : (
                                 <>
-                                    {convertedTimesData?.map((time: Itime) => {
+                                    {timesData.map((time: Itime) => {
                                         return (
                                             <TimetableFormOpt
                                                 key={time.id}

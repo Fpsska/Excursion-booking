@@ -32,12 +32,34 @@ const JsTaskPage: React.FC = () => {
     const [isDataCalculated, setDataCalculatedStatus] =
         useState<boolean>(false);
 
-    const { timesData, convertedTimesData } = useAppSelector(
-        state => state.formSlice
-    );
+    // /. state
+
+    const {
+        timesData,
+        convertedTimesData,
+        filteredTimesData,
+        routesDataFetchStatus
+    } = useAppSelector(state => state.formSlice);
     const dispatch = useAppDispatch();
 
     const { timeZoneName, timeZoneOffset } = getTimeZoneInfo();
+
+    // /. hooks
+
+    const onDocKeyDownClick = useCallback((key: string): void => {
+        switch (key) {
+            case 'ArrowUp':
+                setTicketsCountValue(prevCount => prevCount + 1);
+                break;
+            case 'ArrowDown':
+                setTicketsCountValue(prevCount => prevCount - 1);
+                break;
+            default:
+                return;
+        }
+    }, []);
+
+    // /. functions
 
     useEffect(() => {
         // get routesData[], timesData[] from API
@@ -46,35 +68,35 @@ const JsTaskPage: React.FC = () => {
         }, 1000);
     }, []);
 
-    useEffect(() => {
-        // fill new (converted) times array
-        dispatch(
-            setConvertedTimesData(
-                getConvertedData({
-                    array: timesData,
-                    timeZoneOffset
-                })
-            )
-        );
-    }, [timesData, timeZoneOffset]);
+    // useEffect(() => {
+    //     // fill new (converted) times array
+    //     dispatch(
+    //         setConvertedTimesData(
+    //             getConvertedData({
+    //                 array: timesData,
+    //                 timeZoneOffset
+    //             })
+    //         )
+    //     );
+    // }, [timesData, timeZoneOffset]);
 
-    useEffect(() => {
-        // set initial routeNameValue
-        if (!routeNameValue && isDataCalculated) {
-            setRouteNameValue(
-                convertedTimesData[0]?.value.replace(/[^а-яa-z\s]/gi, '')
-            );
-        }
-    }, [routeNameValue, isDataCalculated, convertedTimesData]);
+    // useEffect(() => {
+    //     // set initial routeNameValue
+    //     if (!routeNameValue && isDataCalculated) {
+    //         setRouteNameValue(
+    //             filteredTimesData[0]?.value.replace(/[^а-яa-z\s]/gi, '')
+    //         );
+    //     }
+    // }, [routeNameValue, isDataCalculated, filteredTimesData]);
 
     useEffect(() => {
         // set initial startTimeValue
         if (!startTimeValue && isDataCalculated) {
             setStartTimeValue(
-                convertedTimesData[0]?.value.replace(/[^0-9:]/g, '')
+                filteredTimesData[0]?.value.replace(/[^0-9:]/g, '')
             );
         }
-    }, [startTimeValue, isDataCalculated, convertedTimesData]);
+    }, [startTimeValue, isDataCalculated, filteredTimesData]);
 
     useEffect(() => {
         // update endTimeValue
@@ -86,19 +108,22 @@ const JsTaskPage: React.FC = () => {
     useEffect(() => {
         // update travelTimeValue, ticketsPriceValue
         switch (routeNameValue) {
-            case 'из A в B и обратно в А':
-                setTravelTimeValue(100);
-                setTicketsPriceValue(ticketsCountValue * 1200);
-                dispatch(filterTimesData({ filterProp: routeNameValue }));
-                break;
             case 'из A в B':
+                console.log('Ef', routeNameValue);
                 setTravelTimeValue(50);
                 setTicketsPriceValue(ticketsCountValue * 700);
                 dispatch(filterTimesData({ filterProp: routeNameValue }));
                 break;
             case 'из B в A':
+                console.log('Ef', routeNameValue);
                 setTravelTimeValue(50);
                 setTicketsPriceValue(ticketsCountValue * 700);
+                dispatch(filterTimesData({ filterProp: routeNameValue }));
+                break;
+            case 'из A в B и обратно в A':
+                console.log('Ef', routeNameValue);
+                setTravelTimeValue(100);
+                setTicketsPriceValue(ticketsCountValue * 1200);
                 dispatch(filterTimesData({ filterProp: routeNameValue }));
                 break;
             default:
@@ -111,17 +136,6 @@ const JsTaskPage: React.FC = () => {
         // reject count of tickets less 0
         ticketsCountValue < 0 && setTicketsCountValue(0);
     }, [routeNameValue, ticketsCountValue]);
-
-    const onDocKeyDownClick = useCallback((key: string): void => {
-        switch (key) {
-            case 'ArrowUp':
-                setTicketsCountValue(prevCount => prevCount + 1);
-                break;
-            case 'ArrowDown':
-                setTicketsCountValue(prevCount => prevCount - 1);
-                break;
-        }
-    }, []);
 
     return (
         <div className="timetable">
