@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { useAppSelector } from '../../app/hooks';
 
@@ -15,6 +15,7 @@ import './timeTable-form.scss';
 
 interface propTypes {
     ticketsCountValue: number;
+    routeNameValue: string;
     isDataCalculated: boolean;
     setRouteNameValue: (arg: string) => void;
     setStartTimeValue: (arg: string) => void;
@@ -27,6 +28,7 @@ interface propTypes {
 
 const TimetableForm: React.FC<propTypes> = props => {
     const {
+        routeNameValue,
         ticketsCountValue,
         isDataCalculated,
         setRouteNameValue,
@@ -36,6 +38,8 @@ const TimetableForm: React.FC<propTypes> = props => {
         onDocKeyDownClick
     } = props;
 
+    // /. props
+
     const {
         routesData,
         routesDataErrorStatus,
@@ -43,12 +47,17 @@ const TimetableForm: React.FC<propTypes> = props => {
         convertedTimesData
     } = useAppSelector(state => state.formSlice);
 
+    const [isTimesDataEmpty, setTimesDataEmptyStatus] =
+        useState<boolean>(false);
+
     const ticketInput = useValidation(ticketsCountValue, {
         minLength: 1,
         maxLength: 10
     });
 
     const formRef = useRef<HTMLFormElement>(null!);
+
+    // /. hooks
 
     const isFormValid =
         ticketsCountValue >= ticketInput.minLengthCount &&
@@ -59,6 +68,8 @@ const TimetableForm: React.FC<propTypes> = props => {
 
     const isInputHasError =
         ticketInput.isInputActive && !ticketInput.isInputValid;
+
+    // variables
 
     const onButtonCalcClick = (): void => {
         setDataCalculatedStatus(true);
@@ -77,6 +88,8 @@ const TimetableForm: React.FC<propTypes> = props => {
         setTicketsCountValue(+validEventValue);
     };
 
+    // /. functions
+
     useEffect(() => {
         const validBtnCondition = !isInputHasError && isFormControlsActive;
         document.addEventListener(
@@ -89,6 +102,17 @@ const TimetableForm: React.FC<propTypes> = props => {
             );
         };
     }, [isInputHasError, isFormControlsActive, onDocKeyDownClick]);
+
+    useEffect(() => {
+        // handle convertedTimesData[] length
+        if (convertedTimesData.length === 0) {
+            setTimesDataEmptyStatus(true);
+        } else {
+            setTimesDataEmptyStatus(false);
+        }
+    }, [convertedTimesData, routeNameValue]);
+
+    // /. effects
 
     return (
         <form
@@ -150,14 +174,20 @@ const TimetableForm: React.FC<propTypes> = props => {
                 >
                     {isFormControlsActive ? (
                         <>
-                            {convertedTimesData?.map((time: Itime) => {
-                                return (
-                                    <TimetableFormOpt
-                                        key={time.id}
-                                        {...time}
-                                    />
-                                );
-                            })}
+                            {isTimesDataEmpty ? (
+                                <PlaceholderOption value={'no matched yet'} />
+                            ) : (
+                                <>
+                                    {convertedTimesData?.map((time: Itime) => {
+                                        return (
+                                            <TimetableFormOpt
+                                                key={time.id}
+                                                {...time}
+                                            />
+                                        );
+                                    })}
+                                </>
+                            )}
                         </>
                     ) : (
                         <PlaceholderOption

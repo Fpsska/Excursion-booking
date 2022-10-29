@@ -10,6 +10,7 @@ import { fetchRoutesData } from '../api/fetchRoutesData';
 interface formSliceState {
     routesData: Iroute[]
     timesData: Itime[]
+    filteredTimesData: Itime[]
     convertedTimesData: Itime[]
     routesDataFetchStatus: string
     routesDataErrorStatus: any
@@ -20,6 +21,7 @@ interface formSliceState {
 const initialState: formSliceState = {
     routesData: [],
     timesData: [],
+    filteredTimesData: [],
     convertedTimesData: [],
     routesDataFetchStatus: '',
     routesDataErrorStatus: null
@@ -33,6 +35,10 @@ const formSlice = createSlice({
     reducers: {
         setConvertedTimesData(state, action: PayloadAction<Itime[]>) {
             state.convertedTimesData = action.payload;
+        },
+        filterTimesData(state, action: PayloadAction<{ filterProp: string }>) {
+            const { filterProp } = action.payload;
+            state.convertedTimesData = state.filteredTimesData.filter((item: Itime) => item.value.includes(filterProp));
         }
     },
     extraReducers: {
@@ -43,6 +49,7 @@ const formSlice = createSlice({
             const { timesData, routesName } = action.payload;
 
             state.timesData = timesData;
+            state.filteredTimesData = timesData;
             state.routesData = routesName;
 
             state.routesDataFetchStatus = 'success';
@@ -55,6 +62,6 @@ const formSlice = createSlice({
     }
 });
 
-export const { setConvertedTimesData } = formSlice.actions;
+export const { setConvertedTimesData, filterTimesData } = formSlice.actions;
 
 export default formSlice.reducer;

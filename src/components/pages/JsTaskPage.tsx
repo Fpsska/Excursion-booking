@@ -2,7 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-import { setConvertedTimesData } from '../../app/slices/formSlice';
+import {
+    setConvertedTimesData,
+    filterTimesData
+} from '../../app/slices/formSlice';
 
 import TimetableForm from '../TimetableForm/TimetableForm';
 
@@ -86,10 +89,20 @@ const JsTaskPage: React.FC = () => {
             case 'из A в B и обратно в А':
                 setTravelTimeValue(100);
                 setTicketsPriceValue(ticketsCountValue * 1200);
+                dispatch(filterTimesData({ filterProp: routeNameValue }));
                 break;
-            default: // "из A в B" и "из B в A"
+            case 'из A в B':
                 setTravelTimeValue(50);
                 setTicketsPriceValue(ticketsCountValue * 700);
+                dispatch(filterTimesData({ filterProp: routeNameValue }));
+                break;
+            case 'из B в A':
+                setTravelTimeValue(50);
+                setTicketsPriceValue(ticketsCountValue * 700);
+                dispatch(filterTimesData({ filterProp: routeNameValue }));
+                break;
+            default:
+                return;
         }
         // update ticketsTextValue
         setTicketsTextValue(
@@ -126,6 +139,7 @@ const JsTaskPage: React.FC = () => {
                 </ul>
                 <TimetableForm
                     ticketsCountValue={ticketsCountValue}
+                    routeNameValue={routeNameValue}
                     isDataCalculated={isDataCalculated}
                     setRouteNameValue={setRouteNameValue}
                     setStartTimeValue={setStartTimeValue}
