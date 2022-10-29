@@ -171,7 +171,12 @@ const TimetableForm: React.FC<propTypes> = props => {
                     className="timetable-form__label"
                     htmlFor="num"
                 >
-                    Количество билетов
+                    <span
+                        className="timetable-form__label-text"
+                        data-prompt={'use up/down arrows for control'}
+                    >
+                        Количество билетов
+                    </span>
                 </label>
                 <input
                     className={
