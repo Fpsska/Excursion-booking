@@ -6,8 +6,6 @@ import { filterTimesData } from '../../app/slices/formSlice';
 
 import TimetableForm from '../TimetableForm/TimetableForm';
 
-import { fetchRoutesData } from '../../app/api/fetchRoutesData';
-
 import { declinateByNum } from '../../helpers/declinateByNum';
 import { getTimeZoneInfo } from '../../helpers/getTimeZoneInfo';
 import { calcRouteTimeValue } from '../../helpers/calcRouteTimeValue';
@@ -77,13 +75,6 @@ const JsTaskPage: React.FC = () => {
 
     // /. functions
 
-    useEffect(() => {
-        // get routesData[], timesData[] from API
-        setTimeout(() => {
-            dispatch(fetchRoutesData());
-        }, 1000);
-    }, []);
-
     // useEffect(() => {
     //     // fill new (converted) times array
     //     dispatch(
@@ -127,24 +118,18 @@ const JsTaskPage: React.FC = () => {
     }, [ticketsCountValue]);
 
     useEffect(() => {
-        // handle timesDataEmptyStatus flag
-        // update startTimeValue when times opt is change of filtered timesData[]
         if (timesData.length === 0) {
+            // hide timetable__output markup when select's data is empty
+            setDataCalculatedStatus(false);
             setTimesDataEmptyStatus(true);
         } else {
             setTimesDataEmptyStatus(false);
+            // set actual value for timetable-form__select after forced re-render timetable__output markup
+            // update startTimeValue when times opt is change of filtered timesData[]
+            setFullTimeValue(timesData[0]?.value);
             setStartTimeValue(timesData[0]?.value.replace(/[^0-9:]/g, ''));
         }
     }, [timesData, routeNameValue]);
-
-    useEffect(() => {
-        // hide timetable__output markup when select's data is empty
-        // set actual value for timetable-form__select after forced re-render timetable__output markup
-        if (isTimesDataEmpty) {
-            setDataCalculatedStatus(false);
-            setFullTimeValue(timesData[0]?.value.replace(/[^0-9:]/g, ''));
-        }
-    }, [isTimesDataEmpty, timesData]);
 
     // /. effects
 
