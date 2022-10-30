@@ -2,10 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-import {
-    setConvertedTimesData,
-    filterTimesData
-} from '../../app/slices/formSlice';
+import { filterTimesData } from '../../app/slices/formSlice';
 
 import TimetableForm from '../TimetableForm/TimetableForm';
 
@@ -13,33 +10,30 @@ import { fetchRoutesData } from '../../app/api/fetchRoutesData';
 
 import { declinateByNum } from '../../helpers/declinateByNum';
 import { getTimeZoneInfo } from '../../helpers/getTimeZoneInfo';
-import { getConvertedData } from '../../helpers/getConvertedData';
 import { calcRouteTimeValue } from '../../helpers/calcRouteTimeValue';
 
 // /.imports
 
 const JsTaskPage: React.FC = () => {
     const [routeNameValue, setRouteNameValue] = useState<string>('');
+    const [fullTimeValue, setFullTimeValue] = useState<string>('');
 
     const [startTimeValue, setStartTimeValue] = useState<string>('');
     const [endTimeValue, setEndTimeValue] = useState<string>('');
     const [travelTimeValue, setTravelTimeValue] = useState<number>(50);
 
     const [ticketsTextValue, setTicketsTextValue] = useState<string>('билет');
-    const [ticketsCountValue, setTicketsCountValue] = useState<number>(0);
+    const [ticketsCountValue, setTicketsCountValue] = useState<number>(1);
     const [ticketsPriceValue, setTicketsPriceValue] = useState<number>(0);
 
     const [isDataCalculated, setDataCalculatedStatus] =
         useState<boolean>(false);
+    const [isTimesDataEmpty, setTimesDataEmptyStatus] =
+        useState<boolean>(false);
 
     // /. state
 
-    const {
-        timesData,
-        convertedTimesData,
-        filteredTimesData,
-        routesDataFetchStatus
-    } = useAppSelector(state => state.formSlice);
+    const { timesData } = useAppSelector(state => state.formSlice);
     const dispatch = useAppDispatch();
 
     const { timeZoneName, timeZoneOffset } = getTimeZoneInfo();
@@ -58,6 +52,28 @@ const JsTaskPage: React.FC = () => {
                 return;
         }
     }, []);
+
+    const handleEventByRouteName = useCallback((): void => {
+        switch (routeNameValue) {
+            case 'из A в B':
+                setTravelTimeValue(50);
+                setTicketsPriceValue(ticketsCountValue * 700);
+                dispatch(filterTimesData({ filterProp: routeNameValue }));
+                break;
+            case 'из B в A':
+                setTravelTimeValue(50);
+                setTicketsPriceValue(ticketsCountValue * 700);
+                dispatch(filterTimesData({ filterProp: routeNameValue }));
+                break;
+            case 'из A в B и обратно в A':
+                setTravelTimeValue(100);
+                setTicketsPriceValue(ticketsCountValue * 1200);
+                dispatch(filterTimesData({ filterProp: routeNameValue }));
+                break;
+            default:
+                return;
+        }
+    }, [routeNameValue, ticketsCountValue]);
 
     // /. functions
 
@@ -80,62 +96,57 @@ const JsTaskPage: React.FC = () => {
     //     );
     // }, [timesData, timeZoneOffset]);
 
-    // useEffect(() => {
-    //     // set initial routeNameValue
-    //     if (!routeNameValue && isDataCalculated) {
-    //         setRouteNameValue(
-    //             filteredTimesData[0]?.value.replace(/[^а-яa-z\s]/gi, '')
-    //         );
-    //     }
-    // }, [routeNameValue, isDataCalculated, filteredTimesData]);
-
     useEffect(() => {
-        // set initial startTimeValue
+        // set startTimeValue when opt is not selected
         if (!startTimeValue && isDataCalculated) {
-            setStartTimeValue(
-                filteredTimesData[0]?.value.replace(/[^0-9:]/g, '')
-            );
+            setStartTimeValue(timesData[0]?.value.replace(/[^0-9:]/g, ''));
         }
-    }, [startTimeValue, isDataCalculated, filteredTimesData]);
+    }, [startTimeValue, isDataCalculated, timesData]);
 
     useEffect(() => {
         // update endTimeValue
-        setEndTimeValue(
-            calcRouteTimeValue({ startTimeValue, travelTimeValue })
-        );
-    }, [startTimeValue, travelTimeValue]);
+        if (isDataCalculated) {
+            setEndTimeValue(
+                calcRouteTimeValue({ startTimeValue, travelTimeValue })
+            );
+        }
+    }, [startTimeValue, travelTimeValue, isDataCalculated]);
 
     useEffect(() => {
         // update travelTimeValue, ticketsPriceValue
-        switch (routeNameValue) {
-            case 'из A в B':
-                console.log('Ef', routeNameValue);
-                setTravelTimeValue(50);
-                setTicketsPriceValue(ticketsCountValue * 700);
-                dispatch(filterTimesData({ filterProp: routeNameValue }));
-                break;
-            case 'из B в A':
-                console.log('Ef', routeNameValue);
-                setTravelTimeValue(50);
-                setTicketsPriceValue(ticketsCountValue * 700);
-                dispatch(filterTimesData({ filterProp: routeNameValue }));
-                break;
-            case 'из A в B и обратно в A':
-                console.log('Ef', routeNameValue);
-                setTravelTimeValue(100);
-                setTicketsPriceValue(ticketsCountValue * 1200);
-                dispatch(filterTimesData({ filterProp: routeNameValue }));
-                break;
-            default:
-                return;
-        }
+        handleEventByRouteName();
+    }, [handleEventByRouteName]);
+
+    useEffect(() => {
         // update ticketsTextValue
         setTicketsTextValue(
             declinateByNum(ticketsCountValue, ['билет', 'билета', 'билетов'])
         );
         // reject count of tickets less 0
         ticketsCountValue < 0 && setTicketsCountValue(0);
-    }, [routeNameValue, ticketsCountValue]);
+    }, [ticketsCountValue]);
+
+    useEffect(() => {
+        // handle timesDataEmptyStatus flag
+        // update startTimeValue when times opt is change of filtered timesData[]
+        if (timesData.length === 0) {
+            setTimesDataEmptyStatus(true);
+        } else {
+            setTimesDataEmptyStatus(false);
+            setStartTimeValue(timesData[0]?.value.replace(/[^0-9:]/g, ''));
+        }
+    }, [timesData, routeNameValue]);
+
+    useEffect(() => {
+        // hide timetable__output markup when select's data is empty
+        // set actual value for timetable-form__select after forced re-render timetable__output markup
+        if (isTimesDataEmpty) {
+            setDataCalculatedStatus(false);
+            setFullTimeValue(timesData[0]?.value.replace(/[^0-9:]/g, ''));
+        }
+    }, [isTimesDataEmpty, timesData]);
+
+    // /. effects
 
     return (
         <div className="timetable">
@@ -154,15 +165,19 @@ const JsTaskPage: React.FC = () => {
                 <TimetableForm
                     ticketsCountValue={ticketsCountValue}
                     routeNameValue={routeNameValue}
+                    fullTimeValue={fullTimeValue}
                     isDataCalculated={isDataCalculated}
+                    isTimesDataEmpty={isTimesDataEmpty}
                     setRouteNameValue={setRouteNameValue}
+                    setFullTimeValue={setFullTimeValue}
                     setStartTimeValue={setStartTimeValue}
+                    setEndTimeValue={setEndTimeValue}
                     setDataCalculatedStatus={setDataCalculatedStatus}
                     setTicketsCountValue={setTicketsCountValue}
                     onDocKeyDownClick={onDocKeyDownClick}
                 />
                 <>
-                    {isDataCalculated && (
+                    {isDataCalculated && !isTimesDataEmpty && (
                         <div className="timetable__output">
                             <p className="timetable__output-text">
                                 Вы выбрали <strong>{ticketsCountValue}</strong>{' '}

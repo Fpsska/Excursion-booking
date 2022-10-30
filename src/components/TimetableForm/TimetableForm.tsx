@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
@@ -16,14 +16,18 @@ import './timeTable-form.scss';
 // /. imports
 
 interface propTypes {
-    ticketsCountValue: number;
     routeNameValue: string;
+    ticketsCountValue: number;
+    fullTimeValue: string;
     isDataCalculated: boolean;
+    isTimesDataEmpty: boolean;
     setRouteNameValue: (arg: string) => void;
     setStartTimeValue: (arg: string) => void;
+    setEndTimeValue: (arg: string) => void;
     setDataCalculatedStatus: (arg: boolean) => void;
     setTicketsCountValue: (arg: number) => void;
     onDocKeyDownClick: (arg: any) => void;
+    setFullTimeValue: (arg: string) => void;
 }
 
 // /. interfaces
@@ -32,12 +36,15 @@ const TimetableForm: React.FC<propTypes> = props => {
     const {
         routeNameValue,
         ticketsCountValue,
+        fullTimeValue,
         isDataCalculated,
+        isTimesDataEmpty,
         setRouteNameValue,
         setStartTimeValue,
         setDataCalculatedStatus,
         setTicketsCountValue,
-        onDocKeyDownClick
+        onDocKeyDownClick,
+        setFullTimeValue
     } = props;
 
     // /. props
@@ -50,9 +57,6 @@ const TimetableForm: React.FC<propTypes> = props => {
         timesData,
         filteredTimesData
     } = useAppSelector(state => state.formSlice);
-
-    const [isTimesDataEmpty, setTimesDataEmptyStatus] =
-        useState<boolean>(false);
 
     const ticketInput = useValidation(ticketsCountValue, {
         minLength: 1,
@@ -69,7 +73,7 @@ const TimetableForm: React.FC<propTypes> = props => {
         ticketsCountValue >= ticketInput.minLengthCount &&
         ticketsCountValue <= ticketInput.maxLengthCount;
 
-    const isFormControlsActive =
+    const isResponseValid =
         !routesDataErrorStatus && routesDataFetchStatus === 'success';
 
     const isInputHasError =
@@ -77,13 +81,14 @@ const TimetableForm: React.FC<propTypes> = props => {
 
     // variables
 
-    const onButtonCalcClick = (): void => {
+    const onButtonCalcClick = (e: any): void => {
+        e.preventDefault();
         setDataCalculatedStatus(true);
     };
 
     const onButtonResetClick = (): void => {
         formRef.current.reset();
-        setTicketsCountValue(0);
+        setTicketsCountValue(1);
         setDataCalculatedStatus(false);
     };
 
@@ -100,10 +105,17 @@ const TimetableForm: React.FC<propTypes> = props => {
         setRouteNameValue(e.target.value);
     };
 
+    const onSelectTimeChange = (
+        e: React.ChangeEvent<HTMLSelectElement>
+    ): void => {
+        setFullTimeValue(e.target.value);
+        setStartTimeValue(e.target.value.replace(/[^0-9:]/g, ''));
+    };
+
     // /. functions
 
     useEffect(() => {
-        const validBtnCondition = !isInputHasError && isFormControlsActive;
+        const validBtnCondition = !isInputHasError && isResponseValid;
         document.addEventListener(
             'keydown',
             e => validBtnCondition && onDocKeyDownClick(e.key)
@@ -113,24 +125,16 @@ const TimetableForm: React.FC<propTypes> = props => {
                 onDocKeyDownClick(e.key)
             );
         };
-    }, [isInputHasError, isFormControlsActive, onDocKeyDownClick]);
+    }, [isInputHasError, isResponseValid, onDocKeyDownClick]);
 
     useEffect(() => {
-        // handle timesData[] length
-        if (timesData.length === 0) {
-            setTimesDataEmptyStatus(true);
-        } else {
-            setTimesDataEmptyStatus(false);
-        }
-    }, [timesData, routeNameValue]);
-
-    useEffect(() => {
-        // set initial timesData[] filtered by current prop after success getting API data
-        if (isFormControlsActive) {
+        // set initial value for all selects after success getting API data
+        // make initial filtering timesData[]
+        if (isResponseValid) {
             setRouteNameValue('из A в B');
             dispatch(filterTimesData({ filterProp: 'из A в B' }));
         }
-    }, [isFormControlsActive]);
+    }, [isResponseValid]);
 
     // /. effects
 
@@ -152,11 +156,11 @@ const TimetableForm: React.FC<propTypes> = props => {
                     name="route"
                     id="route"
                     required
+                    disabled={!isResponseValid}
                     value={routeNameValue}
-                    disabled={!isFormControlsActive}
                     onChange={e => onSelectRouteChange(e)}
                 >
-                    {isFormControlsActive ? (
+                    {isResponseValid ? (
                         <>
                             {routesData.map((route: Iroute) => {
                                 return (
@@ -186,17 +190,14 @@ const TimetableForm: React.FC<propTypes> = props => {
                     name="time"
                     id="time"
                     required
-                    disabled={!isFormControlsActive}
-                    onChange={e =>
-                        setStartTimeValue(
-                            e.target.value.replace(/[^0-9:]/g, '')
-                        )
-                    }
+                    disabled={!isResponseValid}
+                    value={fullTimeValue}
+                    onChange={e => onSelectTimeChange(e)}
                 >
-                    {isFormControlsActive ? (
+                    {isResponseValid ? (
                         <>
                             {isTimesDataEmpty ? (
-                                <PlaceholderOption value={'no matched yet'} />
+                                <PlaceholderOption value={'no matches yet'} />
                             ) : (
                                 <>
                                     {timesData.map((time: Itime) => {
@@ -239,7 +240,7 @@ const TimetableForm: React.FC<propTypes> = props => {
                     id="num"
                     required
                     autoFocus
-                    disabled={!isFormControlsActive}
+                    disabled={!isResponseValid || isTimesDataEmpty}
                     autoComplete="off"
                     value={ticketsCountValue}
                     onBlur={ticketInput.onInputBlur}
@@ -264,7 +265,7 @@ const TimetableForm: React.FC<propTypes> = props => {
                 </>
             </fieldset>
             <>
-                {isDataCalculated ? (
+                {isDataCalculated && !isTimesDataEmpty ? (
                     <button
                         className="timetable-form__button timetable-form__button--reset"
                         type="reset"
@@ -276,8 +277,10 @@ const TimetableForm: React.FC<propTypes> = props => {
                     <button
                         className="timetable-form__button timetable-form__button--calc"
                         type="submit"
-                        disabled={!isFormValid || !isFormControlsActive}
-                        onClick={onButtonCalcClick}
+                        disabled={
+                            !isFormValid || !isResponseValid || isTimesDataEmpty
+                        }
+                        onClick={e => onButtonCalcClick(e)}
                     >
                         Посчитать
                     </button>
