@@ -27,6 +27,7 @@ interface propTypes {
     setDataCalculatedStatus: (arg: boolean) => void;
     setTicketsCountValue: (arg: number) => void;
     setFullTimeValue: (arg: string) => void;
+    handleEventByRouteName: (arg: string) => void;
 }
 
 // /. interfaces
@@ -42,7 +43,8 @@ const TimetableForm: React.FC<propTypes> = props => {
         setStartTimeValue,
         setDataCalculatedStatus,
         setTicketsCountValue,
-        setFullTimeValue
+        setFullTimeValue,
+        handleEventByRouteName
     } = props;
 
     // /. props
@@ -89,28 +91,30 @@ const TimetableForm: React.FC<propTypes> = props => {
         formRef.current.reset();
         setTicketsCountValue(1);
         setDataCalculatedStatus(false);
-        setFullTimeValue(timesData[0]?.value);
-        setStartTimeValue(timesData[0]?.value.replace(/[^0-9:]/g, ''));
+        setFullTimeValue([...timesData][0]?.value);
+        setStartTimeValue([...timesData][0]?.value.replace(/[^0-9:]/g, ''));
     };
 
     const onInputTicketsChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ): void => {
-        const validEventValue = e.target.value.replace(/[^0-9]/g, '');
-        setTicketsCountValue(+validEventValue);
+        const eventValue = e.target.value.replace(/[^0-9]/g, '');
+        setTicketsCountValue(+eventValue);
     };
 
     const onSelectRouteChange = (
         e: React.ChangeEvent<HTMLSelectElement>
     ): void => {
         setRouteNameValue(e.target.value);
+        handleEventByRouteName(e.target.value);
     };
 
     const onSelectTimeChange = (
         e: React.ChangeEvent<HTMLSelectElement>
     ): void => {
-        setFullTimeValue(e.target.value);
-        setStartTimeValue(e.target.value.replace(/[^0-9:]/g, ''));
+        const eventValue = e.target.value;
+        setFullTimeValue(eventValue);
+        setStartTimeValue(eventValue.replace(/[^0-9:]/g, ''));
     };
 
     // /. functions
