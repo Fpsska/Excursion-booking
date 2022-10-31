@@ -38,17 +38,26 @@ const JsTaskPage: React.FC = () => {
 
     // /. hooks
 
-    const onDocKeyDownClick = useCallback((key: string): void => {
-        switch (key) {
-            case 'ArrowUp':
-                setTicketsCountValue(prevCount => prevCount + 1);
-                break;
-            case 'ArrowDown':
-                setTicketsCountValue(prevCount => prevCount - 1);
-                break;
-            default:
-                return;
-        }
+    useEffect(() => {
+        const onDocKeyDownClick = (key: string): void => {
+            switch (key) {
+                case 'ArrowUp':
+                    setTicketsCountValue(prevCount => prevCount + 1);
+                    break;
+                case 'ArrowDown':
+                    setTicketsCountValue(prevCount => prevCount - 1);
+                    break;
+                default:
+                    return;
+            }
+        };
+
+        document.addEventListener('keydown', e => onDocKeyDownClick(e.key));
+        return () => {
+            document.removeEventListener('keydown', e =>
+                onDocKeyDownClick(e.key)
+            );
+        };
     }, []);
 
     const handleEventByRouteName = useCallback((): void => {
@@ -114,7 +123,7 @@ const JsTaskPage: React.FC = () => {
             declinateByNum(ticketsCountValue, ['билет', 'билета', 'билетов'])
         );
         // reject count of tickets less 0
-        ticketsCountValue < 0 && setTicketsCountValue(0);
+        ticketsCountValue <= 0 && setTicketsCountValue(1);
     }, [ticketsCountValue]);
 
     useEffect(() => {
@@ -159,7 +168,6 @@ const JsTaskPage: React.FC = () => {
                     setEndTimeValue={setEndTimeValue}
                     setDataCalculatedStatus={setDataCalculatedStatus}
                     setTicketsCountValue={setTicketsCountValue}
-                    onDocKeyDownClick={onDocKeyDownClick}
                 />
                 <>
                     {isDataCalculated && !isTimesDataEmpty && (

@@ -26,7 +26,6 @@ interface propTypes {
     setEndTimeValue: (arg: string) => void;
     setDataCalculatedStatus: (arg: boolean) => void;
     setTicketsCountValue: (arg: number) => void;
-    onDocKeyDownClick: (arg: any) => void;
     setFullTimeValue: (arg: string) => void;
 }
 
@@ -43,7 +42,6 @@ const TimetableForm: React.FC<propTypes> = props => {
         setStartTimeValue,
         setDataCalculatedStatus,
         setTicketsCountValue,
-        onDocKeyDownClick,
         setFullTimeValue
     } = props;
 
@@ -64,6 +62,7 @@ const TimetableForm: React.FC<propTypes> = props => {
     });
 
     const formRef = useRef<HTMLFormElement>(null!);
+    const inputRef = useRef<HTMLInputElement>(null!);
 
     const dispatch = useAppDispatch();
 
@@ -88,7 +87,7 @@ const TimetableForm: React.FC<propTypes> = props => {
 
     const onButtonResetClick = (): void => {
         formRef.current.reset();
-        setTicketsCountValue(0);
+        setTicketsCountValue(1);
         setDataCalculatedStatus(false);
         setFullTimeValue(timesData[0]?.value);
         setStartTimeValue(timesData[0]?.value.replace(/[^0-9:]/g, ''));
@@ -117,26 +116,14 @@ const TimetableForm: React.FC<propTypes> = props => {
     // /. functions
 
     useEffect(() => {
-        const validBtnCondition = !isInputHasError && isResponseValid;
-        document.addEventListener(
-            'keydown',
-            e => validBtnCondition && onDocKeyDownClick(e.key)
-        );
-        return () => {
-            document.removeEventListener('keydown', e =>
-                onDocKeyDownClick(e.key)
-            );
-        };
-    }, [isInputHasError, isResponseValid, onDocKeyDownClick]);
-
-    useEffect(() => {
         // set initial value for all selects after success getting API data
         // make initial filtering timesData[]
-        if (isResponseValid) {
+        if (isResponseValid && !isTimesDataEmpty) {
             setRouteNameValue('из A в B');
             dispatch(filterTimesData({ filterProp: 'из A в B' }));
+            inputRef.current.focus();
         }
-    }, [isResponseValid]);
+    }, [isResponseValid, isTimesDataEmpty]);
 
     // /. effects
 
@@ -233,6 +220,7 @@ const TimetableForm: React.FC<propTypes> = props => {
                     </span>
                 </label>
                 <input
+                    ref={inputRef}
                     className={
                         isInputHasError
                             ? 'timetable-form__input invalid'
@@ -241,7 +229,6 @@ const TimetableForm: React.FC<propTypes> = props => {
                     type="text"
                     id="num"
                     required
-                    autoFocus
                     disabled={!isResponseValid || isTimesDataEmpty}
                     autoComplete="off"
                     value={ticketsCountValue}
