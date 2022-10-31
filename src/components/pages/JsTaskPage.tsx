@@ -2,13 +2,17 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-import { filterTimesData } from '../../app/slices/formSlice';
+import {
+    filterTimesData,
+    setConvertedTimesData
+} from '../../app/slices/formSlice';
 
 import TimetableForm from '../TimetableForm/TimetableForm';
 
 import { declinateByNum } from '../../helpers/declinateByNum';
 import { getTimeZoneInfo } from '../../helpers/getTimeZoneInfo';
 import { calcRouteTimeValue } from '../../helpers/calcRouteTimeValue';
+import { getConvertedData } from '../../helpers/getConvertedData';
 
 // /.imports
 
@@ -31,7 +35,9 @@ const JsTaskPage: React.FC = () => {
 
     // /. state
 
-    const { timesData } = useAppSelector(state => state.formSlice);
+    const { timesData, convertedTimesData } = useAppSelector(
+        state => state.formSlice
+    );
     const dispatch = useAppDispatch();
 
     const { timeZoneName, timeZoneOffset } = getTimeZoneInfo();
@@ -89,24 +95,26 @@ const JsTaskPage: React.FC = () => {
         };
     }, []);
 
-    // useEffect(() => {
-    //     // fill new (converted) times array
-    //     dispatch(
-    //         setConvertedTimesData(
-    //             getConvertedData({
-    //                 array: timesData,
-    //                 timeZoneOffset
-    //             })
-    //         )
-    //     );
-    // }, [timesData, timeZoneOffset]);
+    useEffect(() => {
+        // fill new (converted) times array
+        dispatch(
+            setConvertedTimesData(
+                getConvertedData({
+                    array: timesData,
+                    timeZoneOffset
+                })
+            )
+        );
+    }, [timesData, timeZoneOffset]);
 
     useEffect(() => {
         // set startTimeValue when opt is not selected
         if (!startTimeValue && isDataCalculated) {
-            setStartTimeValue([...timesData][0]?.value.replace(/[^0-9:]/g, ''));
+            setStartTimeValue(
+                [...convertedTimesData][0]?.value.replace(/[^0-9:]/g, '')
+            );
         }
-    }, [startTimeValue, isDataCalculated, timesData]);
+    }, [startTimeValue, isDataCalculated, convertedTimesData]);
 
     useEffect(() => {
         // update endTimeValue
@@ -127,20 +135,22 @@ const JsTaskPage: React.FC = () => {
     }, [ticketsCountValue]);
 
     useEffect(() => {
-        if (timesData.length === 0) {
+        if (convertedTimesData.length === 0) {
             // hide timetable__output markup when select's data is empty
             setDataCalculatedStatus(false);
             setTimesDataEmptyStatus(true);
         } else {
             setTimesDataEmptyStatus(false);
         }
-    }, [timesData]);
+    }, [convertedTimesData]);
 
     useEffect(() => {
         // set first value for all form selects HTML-elmts after change routeNameValue
-        setFullTimeValue([...timesData][0]?.value);
-        setStartTimeValue([...timesData][0]?.value.replace(/[^0-9:]/g, ''));
-    }, [routeNameValue, timesData]);
+        setFullTimeValue([...convertedTimesData][0]?.value);
+        setStartTimeValue(
+            [...convertedTimesData][0]?.value.replace(/[^0-9:]/g, '')
+        );
+    }, [routeNameValue, convertedTimesData]);
 
     // /. effects
 

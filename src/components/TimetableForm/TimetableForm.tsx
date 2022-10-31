@@ -91,8 +91,10 @@ const TimetableForm: React.FC<propTypes> = props => {
         formRef.current.reset();
         setTicketsCountValue(1);
         setDataCalculatedStatus(false);
-        setFullTimeValue([...timesData][0]?.value);
-        setStartTimeValue([...timesData][0]?.value.replace(/[^0-9:]/g, ''));
+        setFullTimeValue([...convertedTimesData][0]?.value);
+        setStartTimeValue(
+            [...convertedTimesData][0]?.value.replace(/[^0-9:]/g, '')
+        );
     };
 
     const onInputTicketsChange = (
@@ -193,7 +195,7 @@ const TimetableForm: React.FC<propTypes> = props => {
                                 <PlaceholderOption value={'no matches yet'} />
                             ) : (
                                 <>
-                                    {timesData.map((time: Itime) => {
+                                    {convertedTimesData.map((time: Itime) => {
                                         return (
                                             <TimetableFormOpt
                                                 key={time.id}

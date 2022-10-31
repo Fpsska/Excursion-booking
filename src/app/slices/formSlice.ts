@@ -13,7 +13,7 @@ interface formSliceState {
     filteredTimesData: Itime[]
     convertedTimesData: Itime[]
     routesDataFetchStatus: string
-    routesDataErrorStatus: any
+    routesDataErrorStatus: string | null
 }
 
 // /. interfaces
@@ -35,10 +35,11 @@ const formSlice = createSlice({
     reducers: {
         setConvertedTimesData(state, action: PayloadAction<Itime[]>) {
             state.convertedTimesData = action.payload;
+            state.filteredTimesData = action.payload;
         },
         filterTimesData(state, action: PayloadAction<{ filterProp: string }>) {
             const { filterProp } = action.payload;
-            state.timesData = state.filteredTimesData.filter((item: Itime) => item.value.includes(filterProp));
+            state.convertedTimesData = state.filteredTimesData.filter((item: Itime) => item.value.includes(filterProp));
         }
     },
     extraReducers: {
@@ -49,7 +50,6 @@ const formSlice = createSlice({
             const { timesData, routesName } = action.payload;
 
             state.timesData = timesData;
-            state.filteredTimesData = timesData;
             state.routesData = routesName;
 
             state.routesDataFetchStatus = 'success';
