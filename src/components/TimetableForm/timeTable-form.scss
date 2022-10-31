@@ -23,6 +23,10 @@
         }
     }
 
+    &__select.invalid {
+        border: red 1px solid;
+    }
+
     &__input {
         padding: useRem(5);
         margin-bottom: useRem(5);

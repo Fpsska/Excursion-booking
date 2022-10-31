@@ -53,9 +53,7 @@ const TimetableForm: React.FC<propTypes> = props => {
         routesData,
         routesDataErrorStatus,
         routesDataFetchStatus,
-        convertedTimesData,
-        timesData,
-        filteredTimesData
+        convertedTimesData
     } = useAppSelector(state => state.formSlice);
 
     const ticketInput = useValidation(ticketsCountValue, {
@@ -147,7 +145,11 @@ const TimetableForm: React.FC<propTypes> = props => {
                     Выберите направление
                 </label>
                 <select
-                    className="timetable-form__select"
+                    className={
+                        !isResponseValid
+                            ? 'timetable-form__select invalid'
+                            : 'timetable-form__select'
+                    }
                     name="route"
                     id="route"
                     required
@@ -181,7 +183,11 @@ const TimetableForm: React.FC<propTypes> = props => {
                     Выберите время
                 </label>
                 <select
-                    className="timetable-form__select"
+                    className={
+                        !isResponseValid
+                            ? 'timetable-form__select invalid'
+                            : 'timetable-form__select'
+                    }
                     name="time"
                     id="time"
                     required
@@ -228,7 +234,7 @@ const TimetableForm: React.FC<propTypes> = props => {
                 <input
                     ref={inputRef}
                     className={
-                        isInputHasError
+                        isInputHasError || !isResponseValid
                             ? 'timetable-form__input invalid'
                             : 'timetable-form__input'
                     }

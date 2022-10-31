@@ -35,9 +35,12 @@ const JsTaskPage: React.FC = () => {
 
     // /. state
 
-    const { timesData, convertedTimesData } = useAppSelector(
-        state => state.formSlice
-    );
+    const {
+        timesData,
+        convertedTimesData,
+        routesDataErrorStatus,
+        routesDataFetchStatus
+    } = useAppSelector(state => state.formSlice);
     const dispatch = useAppDispatch();
 
     const { timeZoneName, timeZoneOffset } = getTimeZoneInfo();
@@ -72,18 +75,23 @@ const JsTaskPage: React.FC = () => {
 
     // /. functions
 
+    const isResponseValid =
+        !routesDataErrorStatus && routesDataFetchStatus === 'success';
+
     useEffect(() => {
         // control ticketsCountValue by arrows
         const onDocKeyDownClick = (key: string): void => {
-            switch (key) {
-                case 'ArrowUp':
-                    setTicketsCountValue(prevCount => prevCount + 1);
-                    break;
-                case 'ArrowDown':
-                    setTicketsCountValue(prevCount => prevCount - 1);
-                    break;
-                default:
-                    return;
+            if (isResponseValid) {
+                switch (key) {
+                    case 'ArrowUp':
+                        setTicketsCountValue(prevCount => prevCount + 1);
+                        break;
+                    case 'ArrowDown':
+                        setTicketsCountValue(prevCount => prevCount - 1);
+                        break;
+                    default:
+                        return;
+                }
             }
         };
 
@@ -93,7 +101,7 @@ const JsTaskPage: React.FC = () => {
                 onDocKeyDownClick(e.key)
             );
         };
-    }, []);
+    }, [isResponseValid]);
 
     useEffect(() => {
         // fill new (converted) times array
@@ -203,6 +211,14 @@ const JsTaskPage: React.FC = () => {
                                 <strong>{endTimeValue}</strong>.
                             </p>
                         </div>
+                    )}
+                </>
+                <>
+                    {routesDataErrorStatus && (
+                        <span className="error">
+                            Sorry, some problem with server:{' '}
+                            <b>{routesDataErrorStatus}</b>
+                        </span>
                     )}
                 </>
             </div>
