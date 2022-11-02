@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useAppDispatch } from '../../app/hooks';
 
@@ -45,15 +45,29 @@ const CardTemplate: React.FC<propTypes> = props => {
 
     const { isAllowableRes } = useWidthHandler({ min: 300, max: 768 });
 
+    // /. hooks
+
     const onTimeOptionClick = (service_id: number, option_id: number): void => {
         dispatch(switchTimeOptSelectedStatus({ service_id, option_id }));
     };
+
+    const onImageErrorHandler = (
+        e: React.SyntheticEvent<HTMLImageElement>
+    ): void => {
+        const event = e.target as HTMLImageElement;
+        event.src = 'https://via.placeholder.com/425x370';
+        event.onerror = null;
+    };
+
+    // /. functions
 
     useEffect(() => {
         setCurrentColors(
             getRandomArrElement(['#099CE8', '#FFD83C', '#7553FF'])
         );
     }, []);
+
+    // /. effects
 
     return (
         <article className="services__card card">
@@ -69,6 +83,7 @@ const CardTemplate: React.FC<propTypes> = props => {
                         className="card__image"
                         src={require(`../../assets/images/${image}`)}
                         alt="some content image with attraction"
+                        onError={onImageErrorHandler}
                     />
                 </div>
 

@@ -9,11 +9,6 @@
 }
 
 @media screen and (min-width: 525px) {
-
-    // .card .flight-time__wrapper {
-    //     grid-template-columns: repeat(7, auto);
-    // }
-
     .card__wrapper {
         justify-content: space-between;
     }
@@ -75,12 +70,13 @@
         gap: useRem(60);
     }
 
-    // .card .flight-time__wrapper {
-    //     grid-template-columns: repeat(4, 1fr);
-    // }
-
     .card__wrapper {
         flex-direction: row;
+    }
+
+    .card__content {
+        height: auto;
+        justify-content: space-between;
     }
 
     .card__title {
