@@ -14,6 +14,7 @@ interface formSliceState {
     convertedTimesData: Itime[]
     routesDataFetchStatus: string
     routesDataErrorStatus: string | null
+    isTimesDataLoaded: boolean
 }
 
 // /. interfaces
@@ -24,7 +25,8 @@ const initialState: formSliceState = {
     filteredTimesData: [],
     convertedTimesData: [],
     routesDataFetchStatus: '',
-    routesDataErrorStatus: null
+    routesDataErrorStatus: null,
+    isTimesDataLoaded: true
 };
 
 // /. initialState
@@ -54,10 +56,12 @@ const formSlice = createSlice({
 
             state.routesDataFetchStatus = 'success';
             state.routesDataErrorStatus = null;
+            state.isTimesDataLoaded = false;
         },
         [fetchRoutesData.rejected.type]: (state, action: PayloadAction<string>) => {
             state.routesDataFetchStatus = 'failed';
             state.routesDataErrorStatus = action.payload;
+            state.isTimesDataLoaded = false;
         }
     }
 });

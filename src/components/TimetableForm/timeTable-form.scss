@@ -14,23 +14,28 @@
 
     &__select {
         padding: useRem(5);
-        border: $dark-color 1px solid;
+        border: $dark-color useRem(1) solid;
 
         &:disabled {
             cursor: not-allowed;
-            border: orange 1px solid;
+            border: orange useRem(1) solid;
             color: $dark-color;
         }
     }
 
     &__select.invalid {
-        border: red 1px solid;
+        border: red useRem(1) solid;
+    }
+
+    &__select.loading {
+        border: orange useRem(1) solid;
     }
 
     &__input {
         padding: useRem(5);
         margin-bottom: useRem(5);
         border: useRem(1) solid $dark-color;
+        color: $dark-color;
 
         &:disabled {
             cursor: not-allowed;
@@ -39,7 +44,13 @@
 
     &__input.invalid {
         border: useRem(1) solid red;
-        color: red;
+        opacity: 0.7;
+    }
+
+    &__input.loading {
+        border: orange useRem(1) solid;
+        opacity: 0.7;
+        color: inherit;
     }
 
     &__label {
@@ -56,6 +67,7 @@
             top: 50%;
             transform: translateY(-50%);
             opacity: 0;
+            z-index: 2;
             transition: all .3s ease-in-out;
         }
 
@@ -71,7 +83,7 @@
 
             padding: useRem(5);
             margin-left: useRem(15);
-            max-width: 300px;
+            max-width: useRem(300);
             width: 100%;
         }
 

@@ -53,7 +53,8 @@ const TimetableForm: React.FC<propTypes> = props => {
         routesData,
         routesDataErrorStatus,
         routesDataFetchStatus,
-        convertedTimesData
+        convertedTimesData,
+        isTimesDataLoaded
     } = useAppSelector(state => state.formSlice);
 
     const ticketInput = useValidation(ticketsCountValue, {
@@ -145,11 +146,9 @@ const TimetableForm: React.FC<propTypes> = props => {
                     Выберите направление
                 </label>
                 <select
-                    className={
-                        !isResponseValid
-                            ? 'timetable-form__select invalid'
-                            : 'timetable-form__select'
-                    }
+                    className={`timetable-form__select ${
+                        isTimesDataLoaded ? 'loading' : ''
+                    } ${!isResponseValid ? 'invalid' : ''}`}
                     name="route"
                     id="route"
                     required
@@ -183,11 +182,9 @@ const TimetableForm: React.FC<propTypes> = props => {
                     Выберите время
                 </label>
                 <select
-                    className={
-                        !isResponseValid
-                            ? 'timetable-form__select invalid'
-                            : 'timetable-form__select'
-                    }
+                    className={`timetable-form__select ${
+                        isTimesDataLoaded ? 'loading' : ''
+                    } ${!isResponseValid ? 'invalid' : ''}`}
                     name="time"
                     id="time"
                     required
@@ -233,11 +230,9 @@ const TimetableForm: React.FC<propTypes> = props => {
                 </label>
                 <input
                     ref={inputRef}
-                    className={
-                        isInputHasError || !isResponseValid
-                            ? 'timetable-form__input invalid'
-                            : 'timetable-form__input'
-                    }
+                    className={`timetable-form__input ${
+                        isTimesDataLoaded ? 'loading' : ''
+                    } ${isInputHasError || !isResponseValid ? 'invalid' : ''}`}
                     type="text"
                     id="num"
                     required
