@@ -5,7 +5,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 export const fetchRoutesData = createAsyncThunk('formSlice/fetchTimesData',
     async (_, { rejectWithValue }) => {
         try {
-            const URL = 'https://my-jon-server.typicode.com/Fpsska/mockjson/nevaTripDB';
+            const URL = 'https://my-json-server.typicode.com/Fpsska/mockjson/nevaTripDB';
             const response = await fetch(URL);
 
             if (!response.ok) {
