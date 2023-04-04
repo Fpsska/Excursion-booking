@@ -1,9 +1,9 @@
 {
-  "name": "nevatrip-task",
+  "name": "excursion-booking",
   "version": "0.1.0",
   "private": true,
   "author": "Fpsska",
-  "homepage": "https://Fpsska.github.io/NevaTrip-Task",
+  "homepage": "https://Fpsska.github.io/Excursion-booking",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.6",
     "@testing-library/jest-dom": "^5.16.5",

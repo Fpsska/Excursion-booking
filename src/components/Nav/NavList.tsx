@@ -13,7 +13,7 @@ const NavList: React.FC = () => {
                 <li className="nav__item">
                     <NavLink
                         className="nav__link nav__link--main"
-                        to="/NevaTrip-Task/"
+                        to="/Excursion-booking/"
                     >
                         HTML TASK
                     </NavLink>
