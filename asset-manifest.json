@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/NevaTrip-Task/static/css/main.674ac157.css",
-    "main.js": "/NevaTrip-Task/static/js/main.63172d43.js",
-    "static/js/787.7d2b7083.chunk.js": "/NevaTrip-Task/static/js/787.7d2b7083.chunk.js",
-    "static/media/image-2.png": "/NevaTrip-Task/static/media/image-2.5497a9fe570f9f3cb677.png",
-    "static/media/image-1.png": "/NevaTrip-Task/static/media/image-1.26f0ca799de1f6124bb0.png",
-    "static/media/clock-icon.svg": "/NevaTrip-Task/static/media/clock-icon.fb4b5ac4b4faea6cb396.svg",
-    "index.html": "/NevaTrip-Task/index.html",
-    "static/media/check-mark-icon.svg": "/NevaTrip-Task/static/media/check-mark-icon.9140d4d53885657bf775.svg",
-    "main.674ac157.css.map": "/NevaTrip-Task/static/css/main.674ac157.css.map",
-    "main.63172d43.js.map": "/NevaTrip-Task/static/js/main.63172d43.js.map",
-    "787.7d2b7083.chunk.js.map": "/NevaTrip-Task/static/js/787.7d2b7083.chunk.js.map"
+    "main.css": "/Excursion-booking/static/css/main.674ac157.css",
+    "main.js": "/Excursion-booking/static/js/main.c0d7f46f.js",
+    "static/js/787.ab988d14.chunk.js": "/Excursion-booking/static/js/787.ab988d14.chunk.js",
+    "static/media/image-2.png": "/Excursion-booking/static/media/image-2.5497a9fe570f9f3cb677.png",
+    "static/media/image-1.png": "/Excursion-booking/static/media/image-1.26f0ca799de1f6124bb0.png",
+    "static/media/clock-icon.svg": "/Excursion-booking/static/media/clock-icon.817fd541b4e0f13a7c95.svg",
+    "index.html": "/Excursion-booking/index.html",
+    "static/media/check-mark-icon.svg": "/Excursion-booking/static/media/check-mark-icon.52de0912eb26705521b9.svg",
+    "main.674ac157.css.map": "/Excursion-booking/static/css/main.674ac157.css.map",
+    "main.c0d7f46f.js.map": "/Excursion-booking/static/js/main.c0d7f46f.js.map",
+    "787.ab988d14.chunk.js.map": "/Excursion-booking/static/js/787.ab988d14.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.674ac157.css",
-    "static/js/main.63172d43.js"
+    "static/js/main.c0d7f46f.js"
   ]
 }
