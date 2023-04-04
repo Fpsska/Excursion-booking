@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-### `Watch demo` _[NevaTrip-Task](https://fpsska.github.io/NevaTrip-Task/)_
+### `Watch demo` _[Excursion-booking](https://fpsska.github.io/Excursion-booking/)_
 
 In the project directory, you can run:
 
